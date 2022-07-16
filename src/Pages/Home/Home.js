@@ -7,7 +7,8 @@ const Home = () => {
         'https://static.educalingo.com/img/en/800/claw-hammer.jpg',
         'https://cdn.shopify.com/s/files/1/0306/3197/products/lump1_IMG_7724_1024x1024.jpg?v=1553995483',
         'https://cdn.shopify.com/s/files/1/0021/2258/0031/products/nash-hammer-not-a-frame-on-facebook-parts-tools-weekoflabor2018-motorcycle-company-llc-co_638.jpg?v=1566851446',
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTve24w4MeH-JmUjp-sXkFEwti_Cg7immF8ZLCBo_k4D0fU96jQD4_lei7JGfoto5SY328&usqp=CAU'
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTve24w4MeH-JmUjp-sXkFEwti_Cg7immF8ZLCBo_k4D0fU96jQD4_lei7JGfoto5SY328&usqp=CAU',
+        'https://i.ibb.co/3ddRN89/027.jpg'
     ]
     return (
         <div className='container mx-auto h-100 overflow-auto'>
@@ -33,7 +34,7 @@ const Home = () => {
 
             {/* products section========================== */}
             <h1 className='text-4xl text-center mt-10 mb-5'>Our Products</h1>
-            <section className="grid grid-cols-4 gap-3">
+            <section className="grid lg:grid-cols-3 gap-10 justify-items-center">
                 {images.map((product, index) => <ProductCard product={product}></ProductCard>)}
             </section>
 
