@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
+import ReactStars from 'react-stars';
 import SetTitle from '../../Utilities/SetTitle';
 import ProductCard from '../Shared/ProductCard';
+import useProducts from '../../CustomHooks/useProducts';
 
 const Home = () => {
+    const { products, setProducts } = useProducts();
+
+    console.log(products);
+
+
     const images = [
         'https://static.educalingo.com/img/en/800/claw-hammer.jpg',
         'https://cdn.shopify.com/s/files/1/0306/3197/products/lump1_IMG_7724_1024x1024.jpg?v=1553995483',
-        'https://cdn.shopify.com/s/files/1/0021/2258/0031/products/nash-hammer-not-a-frame-on-facebook-parts-tools-weekoflabor2018-motorcycle-company-llc-co_638.jpg?v=1566851446',
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTve24w4MeH-JmUjp-sXkFEwti_Cg7immF8ZLCBo_k4D0fU96jQD4_lei7JGfoto5SY328&usqp=CAU',
-        'https://i.ibb.co/3ddRN89/027.jpg'
+        'https://cdn.shopify.com/s/files/1/0021/2258/0031/products/nash-hammer-not-a-frame-on-facebook-parts-tools-weekoflabor2018-motorcycle-company-llc-co_638.jpg?v=1566851446'
     ]
+
+    const firstExample = {
+        value: 2.5,
+        edit: false
+    };
+
+    const reviewSize = {
+        size: 30,
+    }
     return (
         <div className='container mx-auto h-100 overflow-auto'>
             {/* title */}
@@ -34,9 +48,17 @@ const Home = () => {
 
             {/* products section========================== */}
             <h1 className='text-4xl text-center mt-10 mb-5'>Our Products</h1>
-            <section className="grid lg:grid-cols-3 gap-10 justify-items-center">
+            <section className="grid lg:grid-cols-3 gap-10 justify-items-center mb-10">
                 {images.map((product, index) => <ProductCard product={product}></ProductCard>)}
             </section>
+
+            {/* Customer reviews==================== */}
+            <h1 className='text-4xl text-center mt-10 mb-5'>What client says about us</h1>
+            <ReactStars {...firstExample} {...reviewSize} />
+
+            {/* About us==================== */}
+            <h1 className='text-4xl text-center mt-10 mb-5'>About us</h1>
+
 
         </div>
     );
