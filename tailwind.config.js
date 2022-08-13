@@ -14,6 +14,7 @@ module.exports = {
       "success": "#36D399",
       "warning": "#FBBD23",
       "error": "#F87272",
+      "alert": "#D0342C",
     },
     fontFamily: {
       title: ['Lobster', 'cursive']
