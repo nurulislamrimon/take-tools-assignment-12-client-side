@@ -5,7 +5,6 @@ import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../Utilities/Loading';
 import { async } from '@firebase/util';
-import UploadingSpinner from '../../Utilities/UploadingSpinner';
 
 const Signup = () => {
     const [newError, setNewError] = useState('');
@@ -32,17 +31,32 @@ const Signup = () => {
             method: "POST",
             body: formData
         })
-            .then(res => res.json())
-            .then(async data =>
+            .then(async res => res.json())
+            .then(async data => {
+                await createUserWithEmailAndPassword(email, password);
                 await updateProfile({ displayName: name, photoURL: data?.data?.url })
+            }
             )
-            .catch(console.dir);
+            .catch(console.dir)
 
-        await createUserWithEmailAndPassword(email, password);
     }
 
-    (loading || GoogleLoading || updating) && <Loading />;
-    (user?.user?.uid || GoogleUser?.user?.uid) && navigate('/');
+    (loading || GoogleLoading) && <Loading />;
+
+    updating && <Loading />;
+
+    if (user?.user?.uid || GoogleUser?.user?.uid) {
+        fetch('http://localhost:5000/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: user.user.email })
+        })
+            .then(res => res.json())
+            .then(data => console.log(data))
+        navigate('/');
+    }
 
     return (
         <section className='max-w-md mx-auto border p-10 rounded-2xl'>
@@ -106,8 +120,8 @@ const Signup = () => {
                 </div>
 
                 {
-                    (error || GoogleError || errors || newError || UpdateError) &&
-                    <p className='text-alert text-center'>{error?.message || GoogleError?.message || errors?.message || newError || UpdateError}</p>
+                    (error || GoogleError || errors || newError) &&
+                    <p className='text-alert text-center'>{error?.message || GoogleError?.message || errors?.message || newError}</p>
                 }
                 <button className='btn' >Sign Up</button>
             </form>

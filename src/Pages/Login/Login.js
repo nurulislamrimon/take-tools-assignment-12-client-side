@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../Utilities/Loading';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -11,11 +12,15 @@ const Login = () => {
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = (data) => {
-        signInWithEmailAndPassword(data);
+
+    const onSubmit = ({ email, password }) => {
+        signInWithEmailAndPassword(email, password);
     }
-    // (user?.user?.uid || GoogleUser) && navigate('/')
-    // user && console.log(user);
+
+    if (GoogleLoading || loading) { <Loading /> }
+    (user?.user?.uid || GoogleUser) && navigate('/')
+    GoogleUser && console.log(GoogleUser);
+
     return (
         <section className='max-w-md mx-auto'>
             <h1 className='text-center lg:text-5xl text-3xl my-5'>Login</h1>

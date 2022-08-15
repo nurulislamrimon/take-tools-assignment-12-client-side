@@ -1,5 +1,6 @@
 import { signOut } from 'firebase/auth';
 import React from 'react';
+import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
 import auth from '../../firebase.init';
@@ -8,6 +9,8 @@ import CustomLink from '../../Utilities/CustomLink';
 
 const Header = () => {
     const [user] = useAuthState(auth);
+
+
     const menus = [
         <CustomLink to='/' key={1} className='p-3 btn btn-ghost'>Home</CustomLink>,
         <CustomLink to='/blogs' key={2} className='p-3 btn btn-ghost'>Blogs</CustomLink>,
