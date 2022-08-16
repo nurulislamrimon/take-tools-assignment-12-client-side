@@ -8,6 +8,8 @@ import Login from './Pages/Login/Login';
 import NotFound from './Pages/NotFound/NotFound';
 import Product from './Pages/Product/Product';
 import Signup from './Pages/Signup/Signup';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
       </Routes>
 
       <Footer />
+
+      <ToastContainer />
     </div>
   );
 }

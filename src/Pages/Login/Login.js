@@ -4,6 +4,7 @@ import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-fireba
 import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../Utilities/Loading';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -18,8 +19,24 @@ const Login = () => {
     }
 
     if (GoogleLoading || loading) { <Loading /> }
-    (user?.user?.uid || GoogleUser) && navigate('/')
-    GoogleUser && console.log(GoogleUser);
+    if (user?.user?.uid || GoogleUser) {
+        fetch('http://localhost:5000/user', {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: user?.user?.email || GoogleUser?.user?.email })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data?.matchedCount) {
+                    toast(`Welcome Back Mr.${user?.user?.displayName || GoogleUser?.user?.displayName}`);
+                } else {
+                    toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || 'User'} for being with us`);
+                };
+            })
+        navigate('/')
+    }
 
     return (
         <section className='max-w-md mx-auto'>

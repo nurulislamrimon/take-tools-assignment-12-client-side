@@ -3,11 +3,11 @@ import ReactStars from 'react-stars';
 import SetTitle from '../../Utilities/SetTitle';
 import ProductCard from '../Shared/ProductCard';
 import useProducts from '../../CustomHooks/useProducts';
+import Loading from '../../Utilities/Loading';
 
 const Home = () => {
     const { products, setProducts } = useProducts();
     const carouselItems = products.slice(0, 4);
-    // console.log(products);
 
 
     const firstExample = {

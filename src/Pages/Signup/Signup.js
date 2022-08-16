@@ -4,12 +4,13 @@ import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfil
 import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../Utilities/Loading';
-import { async } from '@firebase/util';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
     const [newError, setNewError] = useState('');
     const navigate = useNavigate();
-
+    const imgbbKey = '8d5dfdf2da4e4f18afbf76c977833211';
+    const formData = new FormData();
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
     const [updateProfile, updating, UpdateError] = useUpdateProfile(auth);
     const [signInWithGoogle, GoogleUser, GoogleLoading, GoogleError] = useSignInWithGoogle(auth);
@@ -23,8 +24,7 @@ const Signup = () => {
             return setNewError('Photo size should be less than 32MB')
         }
 
-        const imgbbKey = '8d5dfdf2da4e4f18afbf76c977833211';
-        const formData = new FormData();
+
         formData.append("image", photo[0]);
 
         fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
@@ -47,14 +47,20 @@ const Signup = () => {
 
     if (user?.user?.uid || GoogleUser?.user?.uid) {
         fetch('http://localhost:5000/user', {
-            method: 'POST',
+            method: 'put',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: user.user.email })
+            body: JSON.stringify({ email: user?.user?.email || GoogleUser?.user?.email })
         })
             .then(res => res.json())
-            .then(data => console.log(data))
+            .then(data => {
+                if (data?.matchedCount) {
+                    toast(`Welcome Back Mr.${user?.user?.displayName || GoogleUser?.user?.displayName}`);
+                } else {
+                    toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
+                };
+            })
         navigate('/');
     }
 
