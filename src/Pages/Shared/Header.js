@@ -15,6 +15,7 @@ const Header = () => {
         <CustomLink to='/' key={1} className='p-3 btn btn-ghost'>Home</CustomLink>,
         <CustomLink to='/blogs' key={2} className='p-3 btn btn-ghost'>Blogs</CustomLink>,
         <CustomLink to='/about' key={3} className='p-3 btn btn-ghost'>About</CustomLink>,
+        <CustomLink to='/products' key='products' className='p-3 btn btn-ghost'>Products</CustomLink>,
         user?.uid ?
             <div key={5} className='flex'>
                 <img src={user?.photoURL || 'https://thumbs.dreamstime.com/b/default-avatar-photo-placeholder-profile-picture-default-avatar-photo-placeholder-profile-picture-eps-file-easy-to-edit-125707135.jpg'} alt='img' height={40} width={50} title={user?.displayName} className='rounded-lg cursor-help mx-3' />

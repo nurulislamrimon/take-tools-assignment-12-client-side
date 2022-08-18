@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form';
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
-import Loading from '../../Utilities/Loading';
+import FullHLoading from '../../Utilities/FullHLoading';
 import { toast } from 'react-toastify';
+import LoadingSpinner from '../../Utilities/LoadingSpinner';
 
 const Signup = () => {
     const [newError, setNewError] = useState('');
@@ -41,9 +42,8 @@ const Signup = () => {
 
     }
 
-    (loading || GoogleLoading) && <Loading />;
+    if (loading || GoogleLoading || updating) { return <FullHLoading /> };
 
-    updating && <Loading />;
 
     if (user?.user?.uid || GoogleUser?.user?.uid) {
         fetch('http://localhost:5000/user', {

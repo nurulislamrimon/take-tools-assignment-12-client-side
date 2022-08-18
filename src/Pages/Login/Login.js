@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
-import Loading from '../../Utilities/Loading';
+import FullHLoading from '../../Utilities/FullHLoading';
 import { toast } from 'react-toastify';
 
 const Login = () => {
@@ -18,7 +18,7 @@ const Login = () => {
         signInWithEmailAndPassword(email, password);
     }
 
-    if (GoogleLoading || loading) { <Loading /> }
+    if (GoogleLoading || loading) { return <FullHLoading /> }
     if (user?.user?.uid || GoogleUser) {
         fetch('http://localhost:5000/user', {
             method: 'put',
