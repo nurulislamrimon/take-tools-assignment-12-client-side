@@ -55,10 +55,11 @@ const UpdateProduct = () => {
     }
 
     const onSubmit = (data) => {
+        const updatedData = { ...data, supplier: user?.email }
         fetch(`http://localhost:5000/product?id=${id}`, {
             method: 'put',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ data: data, supplier: user?.email })
+            body: JSON.stringify(updatedData)
         })
             .then(res => res.json())
             .then(data => data.modifiedCount && toast('Product is updated'))

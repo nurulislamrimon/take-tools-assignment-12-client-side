@@ -13,6 +13,8 @@ import UpdateProduct from './Pages/UpdateProduct/UpdateProduct';
 import RequireAuth from './Utilities/RequireAuth';
 import Products from './Pages/Products/Products';
 import About from './Pages/About/About';
+import AddProduct from './Pages/AddProduct/AddProduct';
+import AllProducts from './Pages/AllProducts/AllProducts';
 
 function App() {
   return (
@@ -24,9 +26,15 @@ function App() {
         <Route path='/blogs' element={<Blogs />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/products' element={<Products />}></Route>
+        <Route path='/allProducts' element={<AllProducts />}></Route>
         <Route path='/product/:id' element={
           <RequireAuth>
             <UpdateProduct />
+          </RequireAuth>
+        }></Route>
+        <Route path='/addProduct' element={
+          <RequireAuth>
+            <AddProduct />
           </RequireAuth>
         }></Route>
         <Route path='/login' element={<Login />}></Route>
