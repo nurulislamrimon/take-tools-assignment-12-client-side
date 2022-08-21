@@ -2,12 +2,11 @@ import React from 'react';
 import ReactStars from 'react-stars';
 import SetTitle from '../../Utilities/SetTitle';
 import ProductCard from '../Shared/ProductCard';
-import useProducts from '../../CustomHooks/useProducts';
-import FullHLoading from '../../Utilities/FullHLoading';
 import LoadingSpinner from '../../Utilities/LoadingSpinner';
+import useAllProducts from '../../CustomHooks/useAllProducts';
 
 const Home = () => {
-    const { products, setProducts } = useProducts(6);
+    const { products, setProducts } = useAllProducts(6);
     const carouselItems = products.slice(0, 4);
 
 
@@ -29,8 +28,8 @@ const Home = () => {
             <section className="carousel w-full">
                 {!products[0] && <LoadingSpinner />}
                 {carouselItems.map((product, index) =>
-                    <div key={index} id={`slide${index}`} className="carousel-item relative w-full h-96 object-contain">
-                        <img src={product?.picture} className="w-full h-full" alt={product?.name} />
+                    <div key={index} id={`slide${index}`} className="carousel-item relative w-full h-96">
+                        <img src={product?.picture} className="w-full h-full object-contain" alt={product?.name} />
                         <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
                             <a href={`#slide${index === 0 ? carouselItems.length - 1 : index - 1}`} className="btn btn-circle">❮</a>
                             <a href={`#slide${index === carouselItems.length - 1 ? 0 : index + 1}`} className="btn btn-circle">❯</a>
