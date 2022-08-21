@@ -2,12 +2,14 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FullHLoading from '../../Utilities/FullHLoading';
 import { toast } from 'react-toastify';
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
 
     const [signInWithGoogle, GoogleUser, GoogleLoading, GoogleError] = useSignInWithGoogle(auth);
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
@@ -29,13 +31,14 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data?.matchedCount) {
+                localStorage.setItem('accessToken', data.accessToken);
+                if (data?.result?.matchedCount) {
                     toast(`Welcome Back Mr.${user?.user?.displayName || GoogleUser?.user?.displayName}`);
                 } else {
-                    toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || 'User'} for being with us`);
+                    toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
                 };
             })
-        navigate('/')
+        navigate(from, { replace: true });
     }
 
     return (

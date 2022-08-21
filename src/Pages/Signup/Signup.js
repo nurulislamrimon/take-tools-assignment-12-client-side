@@ -55,7 +55,8 @@ const Signup = () => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data?.matchedCount) {
+                localStorage.setItem('accessToken', data.accessToken);
+                if (data?.result?.matchedCount) {
                     toast(`Welcome Back Mr.${user?.user?.displayName || GoogleUser?.user?.displayName}`);
                 } else {
                     toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
