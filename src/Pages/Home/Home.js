@@ -4,6 +4,7 @@ import SetTitle from '../../Utilities/SetTitle';
 import ProductCard from '../Shared/ProductCard';
 import LoadingSpinner from '../../Utilities/LoadingSpinner';
 import useAllProducts from '../../CustomHooks/useAllProducts';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const { products, setProducts } = useAllProducts(6);
@@ -43,7 +44,11 @@ const Home = () => {
             </section>
 
             {/* products section========================== */}
-            <h1 className='text-4xl text-center mt-10 mb-5 underline'>Our Products</h1>
+            <div className='relative'>
+                <h1 className='text-4xl mt-10 mb-5 underline text-center'>Products
+                </h1>
+                <Link to='/allProducts' className='absolute right-0 top-0'>See all Products</Link>
+            </div>
             {!products[0] && <LoadingSpinner />}
             <section className="grid lg:grid-cols-3 gap-10 justify-items-center mb-10">
                 {products.map((product, index) => <ProductCard key={index} product={product}></ProductCard>)}

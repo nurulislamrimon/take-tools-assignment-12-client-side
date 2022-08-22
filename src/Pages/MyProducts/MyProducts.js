@@ -2,10 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import useUserProducts from '../../CustomHooks/useUserProducts';
 import ConfirmDelete from '../../Utilities/ConfirmDelete';
+import LoadingSpinner from '../../Utilities/LoadingSpinner';
 
-const Products = () => {
+const MyProducts = () => {
     const { products, setProducts } = useUserProducts();
-
+    if (!products[0]) {
+        return <LoadingSpinner />
+    }
     return (
         <div>
             <div className="overflow-x-auto">
@@ -55,4 +58,4 @@ const Products = () => {
     );
 };
 
-export default Products;
+export default MyProducts;
