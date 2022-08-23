@@ -3,7 +3,7 @@ import React from 'react';
 
 const ConfirmDelete = ({ productId }) => {
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:5000/product?id=${id}`)
+        axios.delete(`https://take-tools.herokuapp.com/product?id=${id}`)
             .then(res => console.log(res))
     }
     return (

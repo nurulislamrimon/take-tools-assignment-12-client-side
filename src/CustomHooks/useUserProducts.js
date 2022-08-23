@@ -11,9 +11,9 @@ const useUserProducts = (limit) => {
     const [products, setProducts] = useState([]);
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
-    console.log(user);
+
     useEffect(() => {
-        axios.get(`http://localhost:5000/myProducts/${user?.email}?limit=${limit}`, {
+        axios.get(`https://take-tools.herokuapp.com/myProducts/${user?.email}?limit=${limit}`, {
             headers: { bearer: localStorage.getItem('accessToken') }
         })
             .then(res => setProducts(res.data))
@@ -24,7 +24,7 @@ const useUserProducts = (limit) => {
                     navigate('/login');
                 }
             })
-    }, [user, limit])
+    }, [user, limit, navigate])
     return { products, setProducts }
 };
 

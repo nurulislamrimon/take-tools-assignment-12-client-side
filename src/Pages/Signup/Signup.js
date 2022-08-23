@@ -46,7 +46,7 @@ const Signup = () => {
 
 
     if (user?.user?.uid || GoogleUser?.user?.uid) {
-        fetch('http://localhost:5000/user', {
+        fetch('https://take-tools.herokuapp.com/user', {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FullHLoading from '../../Utilities/FullHLoading';
@@ -13,6 +13,7 @@ const Login = () => {
 
     const [signInWithGoogle, GoogleUser, GoogleLoading, GoogleError] = useSignInWithGoogle(auth);
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+    const [logedUser] = useAuthState(auth);
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
@@ -20,9 +21,12 @@ const Login = () => {
         signInWithEmailAndPassword(email, password);
     }
 
-    if (GoogleLoading || loading) { return <FullHLoading /> }
-    if (user?.user?.uid || GoogleUser) {
-        fetch('http://localhost:5000/user', {
+    if (loading || GoogleLoading) {
+        return <FullHLoading />
+    }
+
+    if (user || GoogleUser) {
+        fetch('https://take-tools.herokuapp.com/user', {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',
@@ -38,9 +42,9 @@ const Login = () => {
                     toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
                 };
             })
-        navigate(from, { replace: true });
     }
 
+    logedUser && navigate(from, { replace: true });
     return (
         <section className='max-w-md mx-auto'>
             <h1 className='text-center lg:text-5xl text-3xl my-5'>Login</h1>

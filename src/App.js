@@ -26,21 +26,28 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='/blogs' element={<Blogs />}></Route>
         <Route path='/about' element={<About />}></Route>
+        <Route path='/allProducts' element={<AllProducts />}></Route>
+
         <Route path='/dashboard' element={
           <RequireAuth>
             <Dashboard />
           </RequireAuth>
-        }></Route>
-        <Route path='/allProducts' element={<AllProducts />}></Route>
-        <Route path='/myProducts' element={<MyProducts />}></Route>
+        }>
+          <Route path='myProducts' element={
+            <RequireAuth>
+              <MyProducts />
+            </RequireAuth>
+          }></Route>
+          <Route path='addProduct' element={
+            <RequireAuth>
+              <AddProduct />
+            </RequireAuth>
+          }></Route>
+        </Route>
+
         <Route path='/product/:id' element={
           <RequireAuth>
             <UpdateProduct />
-          </RequireAuth>
-        }></Route>
-        <Route path='/addProduct' element={
-          <RequireAuth>
-            <AddProduct />
           </RequireAuth>
         }></Route>
         <Route path='/login' element={<Login />}></Route>

@@ -11,7 +11,7 @@ const AddProduct = () => {
 
     const onSubmit = (data) => {
         const newProduct = { ...data, supplier: user?.email }
-        fetch(`http://localhost:5000/addProduct`, {
+        fetch(`https://take-tools.herokuapp.com/addProduct`, {
             method: 'post',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(newProduct)
@@ -25,7 +25,13 @@ const AddProduct = () => {
         }
     }, [formState, reset])
     return (
-        <section>
+        <section className='relative'>
+            {/* dashboard menu expander */}
+            <label htmlFor="dashboard-sidebar" className="drawer-button lg:hidden absolute left-5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+            </label>
             <form onSubmit={handleSubmit(onSubmit)} className='w-2/4 mx-auto'>
                 <h1 className='text-5xl text-center underline'>Add New Product</h1>
                 <div className="form-control w-full">

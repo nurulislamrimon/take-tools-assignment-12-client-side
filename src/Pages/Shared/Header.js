@@ -17,7 +17,7 @@ const Header = () => {
         <CustomLink to='/about' key={3} className='p-3 btn btn-ghost'>About</CustomLink>,
         user?.uid ?
             <div key={5} className='lg:flex'>
-                <CustomLink to='/dashboard' key='dashboard' className='p-3 btn btn-ghost'>Dashboard</CustomLink>
+                <CustomLink to='/dashboard/myProducts' key='dashboard' className='p-3 btn btn-ghost'>Dashboard</CustomLink>
                 <div className="flex">
                     <img src={user?.photoURL || 'https://thumbs.dreamstime.com/b/default-avatar-photo-placeholder-profile-picture-default-avatar-photo-placeholder-profile-picture-eps-file-easy-to-edit-125707135.jpg'} alt='img' height={40} width={50} title={user?.displayName} className='rounded-lg cursor-help mx-3' />
                     <button className='px-5' onClick={() => signOut(auth)}>

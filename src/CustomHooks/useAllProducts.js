@@ -8,7 +8,7 @@ const useAllProducts = (limit) => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/allProducts?limit=${limit}`, {
+        axios.get(`https://take-tools.herokuapp.com/allProducts?limit=${limit}`, {
         })
             .then(res => setProducts(res.data))
             .catch(err => {
