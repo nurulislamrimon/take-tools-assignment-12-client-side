@@ -26,7 +26,7 @@ const Login = () => {
     }
 
     if (user || GoogleUser) {
-        fetch('https://take-tools.herokuapp.com/user', {
+        fetch('http://localhost:5000/user', {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json',

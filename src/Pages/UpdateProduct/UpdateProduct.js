@@ -56,7 +56,7 @@ const UpdateProduct = () => {
 
     const onSubmit = (data) => {
         const updatedData = { ...data, supplier: user?.email }
-        fetch(`https://take-tools.herokuapp.com/product?id=${id}`, {
+        fetch(`http://localhost:5000/product?id=${id}`, {
             method: 'put',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(updatedData)

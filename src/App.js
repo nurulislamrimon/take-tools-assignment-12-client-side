@@ -14,7 +14,7 @@ import RequireAuth from './Utilities/RequireAuth';
 import About from './Pages/About/About';
 import AddProduct from './Pages/AddProduct/AddProduct';
 import AllProducts from './Pages/AllProducts/AllProducts';
-import MyProducts from './Pages/MyProducts/MyProducts';
+import ManageProducts from './Pages/ManageProducts/ManageProducts';
 import Dashboard from './Pages/Dashboard/Dashboard';
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
         }>
           <Route path='myProducts' element={
             <RequireAuth>
-              <MyProducts />
+              <ManageProducts />
             </RequireAuth>
           }></Route>
           <Route path='addProduct' element={
