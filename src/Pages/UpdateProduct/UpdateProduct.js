@@ -75,7 +75,7 @@ const UpdateProduct = () => {
     return (
         <section>
             <form onSubmit={handleSubmit(onSubmit)} onChange={handleChange} className='w-2/4 mx-auto'>
-                <h1 className='text-5xl text-center'>Update Product</h1>
+                <h1 className='text-5xl text-center underline'>Update Product</h1>
                 <div className="form-control w-full">
                     <label className="label">
                         <span className="label-text text-lg">Product Name:</span>

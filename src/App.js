@@ -16,6 +16,7 @@ import AddProduct from './Pages/AddProduct/AddProduct';
 import AllProducts from './Pages/AllProducts/AllProducts';
 import ManageProducts from './Pages/ManageProducts/ManageProducts';
 import Dashboard from './Pages/Dashboard/Dashboard';
+import CartAProduct from './Pages/CartAProduct/CartAProduct';
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
 
         <Route path='/product/:id' element={
           <RequireAuth>
-            {/* <UpdateProduct /> */}
+            <CartAProduct />
           </RequireAuth>
         }></Route>
         <Route path='/login' element={<Login />}></Route>
