@@ -19,11 +19,11 @@ const Dashboard = () => {
                     <Outlet />
                 </div>
                 {/* drawer side */}
-                <div className="drawer-side">
+                <div className="drawer-side shadow-black">
                     <label htmlFor="dashboard-sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-                        <li><CustomLink to='myProducts'>My Products</CustomLink></li>
-                        <li><CustomLink to='addProduct'>Add Product</CustomLink></li>
+                        <CustomLink to='manageProducts' className='btn btn-ghost w-full'>My Products</CustomLink>
+                        <CustomLink to='addProduct' className='btn btn-ghost w-full'>Add Product</CustomLink>
                     </ul>
                 </div>
             </div>

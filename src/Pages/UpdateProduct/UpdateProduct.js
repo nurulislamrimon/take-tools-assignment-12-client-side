@@ -4,10 +4,12 @@ import useProduct from '../../CustomHooks/useProduct';
 import { useForm } from 'react-hook-form';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const UpdateProduct = () => {
-    const [user] = useAuthState(auth)
+    const [user] = useAuthState(auth);
+    const navigate = useNavigate();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const { id } = useParams();
     const { product, setProduct } = useProduct(id);
@@ -62,13 +64,18 @@ const UpdateProduct = () => {
             body: JSON.stringify(updatedData)
         })
             .then(res => res.json())
-            .then(data => data.modifiedCount && toast('Product is updated'))
+            .then(data => {
+                if (data.modifiedCount) {
+                    toast('Product is updated')
+                    navigate('/dashboard/manageProducts')
+                }
+            })
     }
 
     return (
         <section>
             <form onSubmit={handleSubmit(onSubmit)} onChange={handleChange} className='w-2/4 mx-auto'>
-                <h1 className='text-5xl text-center underline'>{name}</h1>
+                <h1 className='text-5xl text-center'>Update Product</h1>
                 <div className="form-control w-full">
                     <label className="label">
                         <span className="label-text text-lg">Product Name:</span>
@@ -76,7 +83,7 @@ const UpdateProduct = () => {
                     <input className="input input-bordered w-100" value={name}  {...register("name", { required: true })} />
                     {errors.name &&
                         <label className="label">
-                            <small className='text-alert'>Product Name is required</small>
+                            <small className='text-red-700'>Product Name is required</small>
                         </label>
                     }
                 </div>
@@ -87,7 +94,7 @@ const UpdateProduct = () => {
                     <input className="input input-bordered w-100" value={price}  {...register("price", { required: true })} />
                     {errors.price &&
                         <label className="label">
-                            <small className='text-alert'>Price is required</small>
+                            <small className='text-red-700'>Price is required</small>
                         </label>
                     }
                 </div>
@@ -98,7 +105,7 @@ const UpdateProduct = () => {
                     <input className="input input-bordered w-100" value={availableQty}  {...register("availableQty", { required: true })} />
                     {errors.availableQty &&
                         <label className="label">
-                            <small className='text-alert'>Available Quantity is required</small>
+                            <small className='text-red-700'>Available Quantity is required</small>
                         </label>
                     }
                 </div>
@@ -109,7 +116,7 @@ const UpdateProduct = () => {
                     <input className="input input-bordered w-100" value={minOrderQty}  {...register("minOrderQty", { required: true })} />
                     {errors.minOrderQty &&
                         <label className="label">
-                            <small className='text-alert'>Minimum Order Quantity is required</small>
+                            <small className='text-red-700'>Minimum Order Quantity is required</small>
                         </label>
                     }
                 </div>
@@ -120,7 +127,7 @@ const UpdateProduct = () => {
                     <input className="input input-bordered w-100" value={about}  {...register("about", { required: true })} />
                     {errors.about &&
                         <label className="label">
-                            <small className='text-alert'>About is required</small>
+                            <small className='text-red-700'>About is required</small>
                         </label>
                     }
                 </div>
@@ -131,7 +138,7 @@ const UpdateProduct = () => {
                     <input className="input input-bordered w-100" value={picture}  {...register("picture", { required: true })} />
                     {errors.picture &&
                         <label className="label">
-                            <small className='text-alert'>Photo is required</small>
+                            <small className='text-red-700'>Photo is required</small>
                         </label>
                     }
                 </div>

@@ -27,13 +27,13 @@ function App() {
         <Route path='/blogs' element={<Blogs />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/allProducts' element={<AllProducts />}></Route>
-
+        {/* dashboard===================== */}
         <Route path='/dashboard' element={
           <RequireAuth>
             <Dashboard />
           </RequireAuth>
         }>
-          <Route path='myProducts' element={
+          <Route path='manageProducts' element={
             <RequireAuth>
               <ManageProducts />
             </RequireAuth>
@@ -43,11 +43,16 @@ function App() {
               <AddProduct />
             </RequireAuth>
           }></Route>
+          <Route path='updateProduct/:id' element={
+            <RequireAuth>
+              <UpdateProduct />
+            </RequireAuth>
+          }></Route>
         </Route>
 
         <Route path='/product/:id' element={
           <RequireAuth>
-            <UpdateProduct />
+            {/* <UpdateProduct /> */}
           </RequireAuth>
         }></Route>
         <Route path='/login' element={<Login />}></Route>
