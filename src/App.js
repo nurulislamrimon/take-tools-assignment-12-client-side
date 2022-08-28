@@ -17,6 +17,7 @@ import AllProducts from './Pages/AllProducts/AllProducts';
 import ManageProducts from './Pages/ManageProducts/ManageProducts';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import CartAProduct from './Pages/CartAProduct/CartAProduct';
+import Cart from './Pages/Cart/Cart';
 
 function App() {
   return (
@@ -34,6 +35,11 @@ function App() {
             <Dashboard />
           </RequireAuth>
         }>
+          <Route path='myCart' element={
+            <RequireAuth>
+              <Cart />
+            </RequireAuth>
+          }></Route>
           <Route path='manageProducts' element={
             <RequireAuth>
               <ManageProducts />
