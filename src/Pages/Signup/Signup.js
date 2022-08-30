@@ -51,7 +51,7 @@ const Signup = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: user?.user?.email || GoogleUser?.user?.email })
+            body: JSON.stringify({ email: user?.user?.email || GoogleUser?.user?.email, displayName: user?.user?.displayName || GoogleUser?.user?.displayName, photoURL: user?.user?.photoURL || GoogleUser?.user?.photoURL })
         })
             .then(res => res.json())
             .then(data => {

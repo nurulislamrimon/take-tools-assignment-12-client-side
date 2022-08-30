@@ -1,21 +1,34 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import useProduct from '../../CustomHooks/useProduct';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init'
 import { toast } from 'react-toastify';
+import { useState } from 'react';
 
-const CartAProduct = () => {
-    const { id } = useParams();
-    const [user] = useAuthState(auth);
-    const { product, setProduct } = useProduct(id);
+const Purchase = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [user] = useAuthState(auth);
+    const location = useLocation()
+    const [isActiveSubmitBtn, setIsActiveSubmitBtn] = useState(true);
+    const { id } = useParams();
+    const { product, setProduct } = useProduct(id);
 
+    const handleSubmitBtn = e => {
+        if (parseInt(product?.minOrderQty) <= e.target.value && e.target.value <= parseInt(product?.availableQty)) {
+            setIsActiveSubmitBtn(true)
+        } else {
+            setIsActiveSubmitBtn(false)
+        }
+    }
+    const handleChange = e => {
+        const { minOrderQty, ...rest } = product;
+        setProduct({ minOrderQty: e.target.value, ...rest })
+    }
     const onSubmit = (data) => {
         const { _id, ...rest } = product;
-        const newCart = { ...rest, productId: _id, customer: user?.email, cartQuantity: data.cartQuantity }
+        const newCart = { ...rest, productId: _id, customer: user?.email, cartQuantity: data.productQuantity }
         fetch('http://localhost:5000/cartItem', {
             method: 'put',
             headers: { 'content-type': 'application/json', 'bearer': localStorage.getItem('accessToken') },
@@ -27,18 +40,29 @@ const CartAProduct = () => {
                     toast('New product is added on your cart!')
                 }
                 else if (data?.modifiedCount) {
-                    toast('You made a new change on your cart!')
+                    toast('You made a new change at this product on your cart!')
                 }
                 else {
                     toast('You already added this product on your cart!')
                 }
             })
-        // console.log(newOrder);
     }
 
     return (
         <section>
-            <form onSubmit={handleSubmit(onSubmit)} className=' mx-5'>
+
+            <div id="toast-message-cta" className="mx-auto p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
+                <div className="flex">
+                    <img className="w-8 h-8 rounded-full shadow-lg" src={user?.photoURL} alt="img" />
+                    <div className="ml-3 text-sm font-normal">
+                        <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">{user?.displayName}</span>
+                        <div className="mb-2 text-sm font-normal">Hi {user?.displayName}, thanks for being with us.Please complete your profile</div>
+                        <Link to="/editProfile" className='inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-600 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"' state={{ from: location }} replace >Update</Link>
+                    </div>
+                </div>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} onChange={handleChange} className=' mx-5'>
                 <div className="card lg:card-side bg-base-100 shadow-xl items-center">
                     <img src={product?.picture} alt="Album" className='object-fit w-2/4' />
                     <div className="card-body w-2/4">
@@ -54,8 +78,8 @@ const CartAProduct = () => {
                                 <span className="label-text text-lg">Enter product quantity you want to take:</span>
                             </label>
                             <div className="flex">
-                                <input className="input input-bordered mr-5"  {...register("productQuantity", { required: true, min: product?.minOrderQty, max: product?.availableQty })} placeholder={product?.minOrderQty} />
-                                <button className={`btn`}>Add to cart</button>
+                                <input className="input input-bordered mr-5"  {...register("productQuantity", { required: true, min: product?.minOrderQty, max: product?.availableQty })} value={product?.minOrderQty} onChange={handleSubmitBtn} />
+                                <button className={`btn ${!isActiveSubmitBtn && 'btn-disabled'}`}>Add to cart</button>
                             </div>
                             {errors.productQuantity &&
                                 <label className="label">
@@ -71,4 +95,4 @@ const CartAProduct = () => {
     );
 };
 
-export default CartAProduct;
+export default Purchase;

@@ -19,7 +19,9 @@ const Header = () => {
             <div key={5} className='lg:flex'>
                 <CustomLink to='/dashboard/manageProducts' key='dashboard' className='p-3 btn btn-ghost'>Dashboard</CustomLink>
                 <div className="flex">
-                    <img src={user?.photoURL || 'https://thumbs.dreamstime.com/b/default-avatar-photo-placeholder-profile-picture-default-avatar-photo-placeholder-profile-picture-eps-file-easy-to-edit-125707135.jpg'} alt='img' height={40} width={50} title={user?.displayName} className='rounded-lg cursor-help mx-3' />
+                    <Link to='/myProfile' className='cursor-pointer'>
+                        <img src={user?.photoURL || 'https://thumbs.dreamstime.com/b/default-avatar-photo-placeholder-profile-picture-default-avatar-photo-placeholder-profile-picture-eps-file-easy-to-edit-125707135.jpg'} alt='img' height={30} width={50} title={user?.displayName} className='rounded-lg mx-3' />
+                    </Link>
                     <button className='px-5' onClick={() => signOut(auth)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

@@ -16,8 +16,10 @@ import AddProduct from './Pages/AddProduct/AddProduct';
 import AllProducts from './Pages/AllProducts/AllProducts';
 import ManageProducts from './Pages/ManageProducts/ManageProducts';
 import Dashboard from './Pages/Dashboard/Dashboard';
-import CartAProduct from './Pages/CartAProduct/CartAProduct';
 import Cart from './Pages/Cart/Cart';
+import Purchase from './Pages/Purchase/Purchase';
+import EditProfile from './Pages/EditProfile/EditProfile';
+import MyProfile from './Pages/MyProfile/MyProfile';
 
 function App() {
   return (
@@ -29,6 +31,16 @@ function App() {
         <Route path='/blogs' element={<Blogs />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/allProducts' element={<AllProducts />}></Route>
+        <Route path='/myProfile' element={
+          <RequireAuth>
+            <MyProfile />
+          </RequireAuth>
+        }></Route>
+        <Route path='/editProfile' element={
+          <RequireAuth>
+            <EditProfile />
+          </RequireAuth>
+        }></Route>
         {/* dashboard===================== */}
         <Route path='/dashboard' element={
           <RequireAuth>
@@ -59,7 +71,7 @@ function App() {
 
         <Route path='/product/:id' element={
           <RequireAuth>
-            <CartAProduct />
+            <Purchase />
           </RequireAuth>
         }></Route>
         <Route path='/login' element={<Login />}></Route>
