@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 const Dashboard = () => {
     return (
-        <div>
+        <div className='h-[calc(100vh-130px)] overflow-hidden pb-10'>
             <div className="drawer drawer-mobile drawer-start">
                 <input id="dashboard-sidebar" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">

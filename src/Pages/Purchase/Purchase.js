@@ -6,10 +6,11 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init'
 import { toast } from 'react-toastify';
 import { useState } from 'react';
+import useUserInfo from '../../CustomHooks/useUserInfo';
 
 const Purchase = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [user] = useAuthState(auth);
+    const { userInfo } = useUserInfo();
     const location = useLocation()
     const [isActiveSubmitBtn, setIsActiveSubmitBtn] = useState(true);
     const { id } = useParams();
@@ -28,7 +29,7 @@ const Purchase = () => {
     }
     const onSubmit = (data) => {
         const { _id, ...rest } = product;
-        const newCart = { ...rest, productId: _id, customer: user?.email, cartQuantity: data.productQuantity }
+        const newCart = { ...rest, productId: _id, customer: userInfo?.email, cartQuantity: data.productQuantity }
         fetch('http://localhost:5000/cartItem', {
             method: 'put',
             headers: { 'content-type': 'application/json', 'bearer': localStorage.getItem('accessToken') },
@@ -51,16 +52,16 @@ const Purchase = () => {
     return (
         <section>
 
-            <div id="toast-message-cta" className="mx-auto p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
+            {(!userInfo?.phoneNumber || !userInfo?.address) && <div id="toast-message-cta" className="mx-auto p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert">
                 <div className="flex">
-                    <img className="w-8 h-8 rounded-full shadow-lg" src={user?.photoURL} alt="img" />
+                    <img className="w-8 h-8 rounded-full shadow-lg" src={userInfo?.photoURL} alt="img" />
                     <div className="ml-3 text-sm font-normal">
-                        <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">{user?.displayName}</span>
-                        <div className="mb-2 text-sm font-normal">Hi {user?.displayName}, thanks for being with us.Please complete your profile</div>
-                        <Link to="/editProfile" className='inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-600 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"' state={{ from: location }} replace >Update</Link>
+                        <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">{userInfo?.displayName}</span>
+                        <div className="mb-2 text-sm font-normal">Hi {userInfo?.displayName}, thanks for being with us.Please complete your profile</div>
+                        <Link to="/editProfile" className='inline-flex justify-center w-full px-2 py-1.5 text-xs font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-600 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"' state={{ from: location }} replace >Update Profile</Link>
                     </div>
                 </div>
-            </div>
+            </div>}
 
             <form onSubmit={handleSubmit(onSubmit)} onChange={handleChange} className=' mx-5'>
                 <div className="card lg:card-side bg-base-100 shadow-xl items-center">
