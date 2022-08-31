@@ -14,7 +14,7 @@ const EditProfile = () => {
     const formData = new FormData();
     const location = useLocation();
     const navigate = useNavigate();
-    let from = location.state?.from?.pathname || "/myProfile";
+    let from = location.state?.from?.pathname || "/dashboard/myProfile";
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [editName, setEditName] = useState(false);
     const [editMobile, setEditMobile] = useState(false);
@@ -27,6 +27,10 @@ const EditProfile = () => {
         return <FullHLoading />
     }
     const handleChange = (e) => {
+        if (e.target.name === 'photo') {
+            const { photoURL, ...rest } = userInfo;
+            setUserInfo({ photoURL: URL.createObjectURL(e.target.files[0]), ...rest })
+        }
         if (e.target.name === 'name') {
             const { displayName, ...rest } = userInfo;
             setUserInfo({ displayName: e.target.value, ...rest })
@@ -85,7 +89,7 @@ const EditProfile = () => {
             method: 'put',
             headers: {
                 "content-type": "application/json",
-                bearer: localStorage.getItem('accessToken')
+                "bearer": localStorage.getItem('accessToken')
             },
             body: JSON.stringify(rest)
         })
@@ -95,19 +99,20 @@ const EditProfile = () => {
                     toast('Your profile information updated')
                 }
             })
+        refetch();
         navigate(from);
     }
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)} onChange={handleChange} className="grid gap-5 pb-5 lg:w-2/4 mx-auto p-4">
                 <div className="rounded-full w-20 h-20 mx-auto relative  overflow-hidden">
-                    <img src={userInfo?.photoURL} alt="img" className="rounded-full w-full h-full" />
+                    <img src={userInfo?.photoURL} alt="img" className="rounded-full w-full h-full object-cover" />
 
 
-                    <div className="w-20 h-2/4 mx-auto absolute bottom-0 bg-zinc-900/25">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-8 h-8 absolute bottom-2 left-1/2 transform -translate-x-1/2 z">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                    <div className="w-20 h-2/4 mx-auto absolute bottom-0 bg-black/50">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="white" className="w-8 h-8 absolute bottom-2 left-1/2 transform -translate-x-1/2 z">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
                         </svg>
                         <input type="file"  {...register("photo")} className="opacity-0" />
                     </div>

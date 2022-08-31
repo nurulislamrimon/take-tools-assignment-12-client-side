@@ -5,6 +5,8 @@ import auth from '../../firebase.init';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FullHLoading from '../../Utilities/FullHLoading';
 import { toast } from 'react-toastify';
+import useToken from '../../CustomHooks/useToken';
+import { useEffect } from 'react';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -13,6 +15,7 @@ const Login = () => {
 
     const [signInWithGoogle, GoogleUser, GoogleLoading, GoogleError] = useSignInWithGoogle(auth);
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+    const { token, setToken } = useToken(user || GoogleUser);
     const [logedUser] = useAuthState(auth);
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -20,31 +23,35 @@ const Login = () => {
     const onSubmit = ({ email, password }) => {
         signInWithEmailAndPassword(email, password);
     }
+    useEffect(() => {
+        if (logedUser) { navigate(from, { replace: true }) }
+    }, [logedUser, from, navigate])
 
     if (loading || GoogleLoading) {
         return <FullHLoading />
     }
 
-    if (user || GoogleUser) {
-        fetch('http://localhost:5000/user', {
-            method: 'put',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: user?.user?.email || GoogleUser?.user?.email, displayName: user?.user?.displayName || GoogleUser?.user?.displayName, photoURL: user?.user?.photoURL || GoogleUser?.user?.photoURL })
-        })
-            .then(res => res.json())
-            .then(data => {
-                localStorage.setItem('accessToken', data.accessToken);
-                if (data?.result?.matchedCount) {
-                    toast(`Welcome Back Mr.${user?.user?.displayName || GoogleUser?.user?.displayName}`);
-                } else {
-                    toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
-                };
-            })
-    }
+    /*  if (user || GoogleUser) {
+          fetch('http://localhost:5000/user', {
+             method: 'put',
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({ email: user?.user?.email || GoogleUser?.user?.email, displayName: user?.user?.displayName || GoogleUser?.user?.displayName, photoURL: user?.user?.photoURL || GoogleUser?.user?.photoURL })
+         })
+             .then(res => res.json())
+             .then(data => {
+                 localStorage.setItem('accessToken', data.accessToken);
+                 if (data?.result?.matchedCount) {
+                     toast(`Welcome Back Mr.${user?.user?.displayName || GoogleUser?.user?.displayName}`);
+                 } else {
+                     toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
+                 };
+             }) 
+     } */
 
-    logedUser && navigate(from, { replace: true });
+    // logedUser && navigate(from, { replace: true });
+
     return (
         <section className='max-w-md mx-auto'>
             <h1 className='text-center lg:text-5xl text-3xl my-5'>Login</h1>

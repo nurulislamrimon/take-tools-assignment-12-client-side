@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
+import { useAuthState, useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
 import FullHLoading from '../../Utilities/FullHLoading';
 import { toast } from 'react-toastify';
 import LoadingSpinner from '../../Utilities/LoadingSpinner';
+import useToken from '../../CustomHooks/useToken';
+import { useEffect } from 'react';
 
 const Signup = () => {
     const [newError, setNewError] = useState('');
@@ -16,6 +18,8 @@ const Signup = () => {
     const [updateProfile, updating, UpdateError] = useUpdateProfile(auth);
     const [signInWithGoogle, GoogleUser, GoogleLoading, GoogleError] = useSignInWithGoogle(auth);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { token, setToken } = useToken(user || GoogleUser);
+    const [logedUser] = useAuthState(auth);
 
     const onSubmit = async ({ name, email, password, confirmPassword, photo }) => {
         if (password !== confirmPassword) {
@@ -42,10 +46,14 @@ const Signup = () => {
 
     }
 
-    if (loading || GoogleLoading || updating) { return <FullHLoading /> };
+    useEffect(() => {
+        logedUser && navigate('/');
+    }, [logedUser, navigate])
+
+    if (loading || GoogleLoading) { return <FullHLoading /> };
 
 
-    if (user?.user?.uid || GoogleUser?.user?.uid) {
+    /* if (user?.user?.uid || GoogleUser?.user?.uid) {
         fetch('http://localhost:5000/user', {
             method: 'put',
             headers: {
@@ -62,8 +70,7 @@ const Signup = () => {
                     toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
                 };
             })
-        navigate('/');
-    }
+        } */
 
     return (
         <section className='max-w-md mx-auto border p-10 rounded-2xl'>
@@ -77,7 +84,7 @@ const Signup = () => {
                     <input className="input input-bordered w-100"  {...register("name", { required: true })} />
                     {errors.name &&
                         <label className="label">
-                            <small className='text-alert'>Name is required</small>
+                            <small className='text-danger'>Name is required</small>
                         </label>
                     }
                 </div>
@@ -88,7 +95,7 @@ const Signup = () => {
                     <input className="input input-bordered w-100"  {...register("email", { required: true })} />
                     {errors.email &&
                         <label className="label">
-                            <small className='text-alert'>Email is required</small>
+                            <small className='text-danger'>Email is required</small>
                         </label>
                     }
                 </div>
@@ -99,7 +106,7 @@ const Signup = () => {
                     <input className="input input-bordered w-100"  {...register("password", { required: true })} />
                     {errors.password &&
                         <label className="label">
-                            <small className='text-alert'>New password is required</small>
+                            <small className='text-danger'>New password is required</small>
                         </label>
                     }
                 </div>
@@ -110,7 +117,7 @@ const Signup = () => {
                     <input className="input input-bordered w-100"  {...register("confirmPassword", { required: true })} />
                     {errors?.confirmPassword &&
                         <label className="label">
-                            <small className='text-alert'>Confirm password is required</small>
+                            <small className='text-danger'>Confirm password is required</small>
                         </label>
                     }
                 </div>
@@ -121,14 +128,14 @@ const Signup = () => {
                     <input type='file' className="input input-bordered w-100"  {...register("photo", { required: true })} />
                     {errors?.photo &&
                         <label className="label">
-                            <small className='text-alert'>Photo is required</small>
+                            <small className='text-danger'>Photo is required</small>
                         </label>
                     }
                 </div>
 
                 {
                     (error || GoogleError || errors || newError) &&
-                    <p className='text-alert text-center'>{error?.message || GoogleError?.message || errors?.message || newError}</p>
+                    <p className='text-danger text-center'>{error?.message || GoogleError?.message || errors?.message || newError}</p>
                 }
                 <button className='btn' >Sign Up</button>
             </form>

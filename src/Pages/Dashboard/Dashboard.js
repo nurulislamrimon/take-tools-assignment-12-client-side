@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 const Dashboard = () => {
     return (
-        <div className='h-[calc(100vh-130px)] overflow-hidden pb-10'>
+        <div className='h-[calc(100vh-115px)] overflow-hidden pb-10'>
             <div className="drawer drawer-mobile drawer-start">
                 <input id="dashboard-sidebar" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content">
@@ -24,7 +24,9 @@ const Dashboard = () => {
                     <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
                         <CustomLink to='manageProducts' className='btn btn-ghost w-full'>Manage Products</CustomLink>
                         <CustomLink to='addProduct' className='btn btn-ghost w-full'>Add Product</CustomLink>
-                        <CustomLink to='myCart' className='btn btn-ghost w-full'>My Cart</CustomLink>
+                        <CustomLink to='myOrders' className='btn btn-ghost w-full'>My Orders</CustomLink>
+                        <CustomLink to='addReview' className='btn btn-ghost w-full'>Add a Review</CustomLink>
+                        <CustomLink to='myProfile' className='btn btn-ghost w-full'>My Profile</CustomLink>
                     </ul>
                 </div>
             </div>

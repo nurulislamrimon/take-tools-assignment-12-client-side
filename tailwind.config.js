@@ -4,6 +4,12 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
+    colors: {
+      'primary': 'blue',
+      'alert': 'red',
+      'black': 'black',
+      'white': 'white',
+    },
     extend: {},
     fontFamily: {
       title: ['Lobster', 'cursive']

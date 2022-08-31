@@ -25,7 +25,7 @@ const AddProduct = () => {
         }
     }, [formState, reset])
     return (
-        <section className='relative'>
+        <section className='relative h-[calc(100vh-115px)] overflow-auto'>
             {/* dashboard menu expander */}
             <label htmlFor="dashboard-sidebar" className="drawer-button lg:hidden absolute left-5">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -33,7 +33,7 @@ const AddProduct = () => {
                 </svg>
             </label>
             <form onSubmit={handleSubmit(onSubmit)} className='w-2/4 mx-auto'>
-                <h1 className='text-5xl text-center underline'>Add New Product</h1>
+                <h1 className='text-xl lg:text-5xl text-center underline'>Add New Product</h1>
                 <div className="form-control w-full">
                     <label className="label">
                         <span className="label-text text-lg">Product Name:</span>

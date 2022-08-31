@@ -16,10 +16,11 @@ import AddProduct from './Pages/AddProduct/AddProduct';
 import AllProducts from './Pages/AllProducts/AllProducts';
 import ManageProducts from './Pages/ManageProducts/ManageProducts';
 import Dashboard from './Pages/Dashboard/Dashboard';
-import Cart from './Pages/Cart/Cart';
+import MyOrders from './Pages/MyOrders/MyOrders';
 import Purchase from './Pages/Purchase/Purchase';
 import EditProfile from './Pages/EditProfile/EditProfile';
 import MyProfile from './Pages/MyProfile/MyProfile';
+import AddReview from './Pages/AddReview/AddReview';
 
 function App() {
   return (
@@ -31,11 +32,6 @@ function App() {
         <Route path='/blogs' element={<Blogs />}></Route>
         <Route path='/about' element={<About />}></Route>
         <Route path='/allProducts' element={<AllProducts />}></Route>
-        <Route path='/myProfile' element={
-          <RequireAuth>
-            <MyProfile />
-          </RequireAuth>
-        }></Route>
         <Route path='/editProfile' element={
           <RequireAuth>
             <EditProfile />
@@ -47,11 +43,6 @@ function App() {
             <Dashboard />
           </RequireAuth>
         }>
-          <Route path='myCart' element={
-            <RequireAuth>
-              <Cart />
-            </RequireAuth>
-          }></Route>
           <Route path='manageProducts' element={
             <RequireAuth>
               <ManageProducts />
@@ -65,6 +56,21 @@ function App() {
           <Route path='updateProduct/:id' element={
             <RequireAuth>
               <UpdateProduct />
+            </RequireAuth>
+          }></Route>
+          <Route path='myOrders' element={
+            <RequireAuth>
+              <MyOrders />
+            </RequireAuth>
+          }></Route>
+          <Route path='addReview' element={
+            <RequireAuth>
+              <AddReview />
+            </RequireAuth>
+          }></Route>
+          <Route path='myProfile' element={
+            <RequireAuth>
+              <MyProfile />
             </RequireAuth>
           }></Route>
         </Route>
