@@ -1,9 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useProduct from '../../CustomHooks/useProduct';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import auth from '../../firebase.init'
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import useUserInfo from '../../CustomHooks/useUserInfo';
@@ -12,7 +10,7 @@ import UpdateProfileToast from '../../Utilities/UpdateProfileToast';
 const Purchase = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const { userInfo } = useUserInfo();
-    const location = useLocation()
+    const navigate = useNavigate();
     const [isActiveSubmitBtn, setIsActiveSubmitBtn] = useState(true);
     const { id } = useParams();
     const { product, setProduct } = useProduct(id);
@@ -31,7 +29,7 @@ const Purchase = () => {
     const onSubmit = (data) => {
         const { _id, ...rest } = product;
         const newCart = { ...rest, productId: _id, customer: userInfo?.email, cartQuantity: data.productQuantity }
-        fetch('http://localhost:5000/cartItem', {
+        fetch('http://localhost:5000/orderItem', {
             method: 'put',
             headers: { 'content-type': 'application/json', 'bearer': localStorage.getItem('accessToken') },
             body: JSON.stringify(newCart)
@@ -48,6 +46,7 @@ const Purchase = () => {
                     toast('You already added this product on your cart!')
                 }
             })
+        navigate('/dashboard/myOrders')
     }
 
     return (

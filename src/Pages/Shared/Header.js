@@ -2,15 +2,12 @@ import { signOut } from 'firebase/auth';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
-import useUserInfo from '../../CustomHooks/useUserInfo';
 import auth from '../../firebase.init';
 import CustomLink from '../../Utilities/CustomLink';
 
 
 const Header = () => {
-    const { userInfo } = useUserInfo();
     const [user] = useAuthState(auth);
-
 
     const menus = [
         <CustomLink to='/' key={1} className='p-3 btn btn-ghost'>Home</CustomLink>,
@@ -22,7 +19,7 @@ const Header = () => {
                 <CustomLink to='/dashboard/manageProducts' key='dashboard' className='p-3 btn btn-ghost'>Dashboard</CustomLink>
                 <div className="flex">
                     <Link to='/dashboard/myProfile' className='cursor-pointer'>
-                        <img src={userInfo?.photoURL || 'https://thumbs.dreamstime.com/b/default-avatar-photo-placeholder-profile-picture-default-avatar-photo-placeholder-profile-picture-eps-file-easy-to-edit-125707135.jpg'} alt='img' height={40} width={40} title={userInfo?.displayName} className='rounded-lg mx-3 object-cover' />
+                        <img src={user?.photoURL || 'https://thumbs.dreamstime.com/b/default-avatar-photo-placeholder-profile-picture-default-avatar-photo-placeholder-profile-picture-eps-file-easy-to-edit-125707135.jpg'} alt='img' height={40} width={40} title={user?.displayName} className='rounded-lg mx-3 object-cover' />
                     </Link>
                     <button className='px-5' onClick={() => signOut(auth)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

@@ -1,41 +1,36 @@
 import axios from 'axios';
 import { signOut } from 'firebase/auth';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import auth from '../firebase.init';
+import LoadingSpinner from '../Utilities/LoadingSpinner';
 
 const useUserInfo = () => {
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({});
-    const { isLoading, error, data, refetch } = useQuery([user?.email], () => {
-        if (user) {
-            return fetch(`http://localhost:5000/user/${user?.email}`, {
-                headers: {
-                    "bearer": localStorage.getItem('accessToken')
-                }
-            })
-                .then(res => res.json())
+    const { isLoading, error, data, refetch } = useQuery([user?.email], async () => await axios(`http://localhost:5000/user/${user?.email}`, {
+        headers: {
+            bearer: localStorage.getItem('accessToken')
         }
-    }
+    })
     );
 
     useEffect(() => {
-        setUserInfo(data);
-    }, [data]);
+        setUserInfo(data?.data)
+    }, [data])
+    isLoading && <LoadingSpinner />
 
-    if (error) {
-        if (error?.response?.status === 401 || 403) {
-            toast.error('Sorry! Unauthorized access');
-            signOut(auth);
-            navigate('/login')
-        }
+    if (error?.response?.status === (401 || 403)) {
+        toast('Unauthorized access')
+        signOut(auth)
+        navigate('/login')
     }
-    // error && toast.error(error?.message)
+
     return { userInfo, setUserInfo, refetch, isLoading }
 };
 

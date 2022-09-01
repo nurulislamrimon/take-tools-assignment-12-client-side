@@ -52,26 +52,6 @@ const Signup = () => {
 
     if (loading || GoogleLoading) { return <FullHLoading /> };
 
-
-    /* if (user?.user?.uid || GoogleUser?.user?.uid) {
-        fetch('http://localhost:5000/user', {
-            method: 'put',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: user?.user?.email || GoogleUser?.user?.email, displayName: user?.user?.displayName || GoogleUser?.user?.displayName, photoURL: user?.user?.photoURL || GoogleUser?.user?.photoURL })
-        })
-            .then(res => res.json())
-            .then(data => {
-                localStorage.setItem('accessToken', data.accessToken);
-                if (data?.result?.matchedCount) {
-                    toast(`Welcome Back Mr.${user?.user?.displayName || GoogleUser?.user?.displayName}`);
-                } else {
-                    toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
-                };
-            })
-        } */
-
     return (
         <section className='max-w-md mx-auto border p-10 rounded-2xl'>
             <h1 className='text-center text-3xl lg:text-5xl border-b-2 pb-2 mb-5'>Sign up</h1>

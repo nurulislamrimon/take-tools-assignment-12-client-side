@@ -19,7 +19,7 @@ const Dashboard = () => {
                     <Outlet />
                 </div>
                 {/* drawer side */}
-                <div className="drawer-side shadow-black">
+                <div className="drawer-side shadow-2xl overflow-auto h-[calc(100vh-115px)]">
                     <label htmlFor="dashboard-sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
                         <CustomLink to='manageProducts' className='btn btn-ghost w-full'>Manage Products</CustomLink>

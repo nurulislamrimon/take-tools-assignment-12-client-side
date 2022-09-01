@@ -8,12 +8,11 @@ const useAllProducts = (limit) => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/allProducts?limit=${limit}`, {
-        })
+        axios(`http://localhost:5000/allProducts?limit=${limit}`)
             .then(res => setProducts(res.data))
             .catch(err => {
-                if (err?.response?.status === 401) {
-                    toast('You do not have access authority');
+                if (err?.response?.status === (401 || 403)) {
+                    toast('You do not have access permission');
                     signOut(auth);
                 }
             })

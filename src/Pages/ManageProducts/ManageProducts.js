@@ -13,24 +13,25 @@ import { signOut } from 'firebase/auth';
 const ManageProducts = () => {
     const [controllDeletion, setControllDeletion] = useState(null);
     const [user] = useAuthState(auth);
+    const navigate = useNavigate();
     const limit = 0;
 
-    const { isLoading, error, data, refetch } = useQuery([user, limit], () =>
-        axios.get(`http://localhost:5000/manageProducts/${user?.email}?limit=${limit}`, {
+    const { isLoading, data, error, refetch } = useQuery([user, limit], async () =>
+        await axios(`http://localhost:5000/manageProducts/${user?.email}?limit=${limit}`, {
             headers: { bearer: localStorage.getItem('accessToken') }
         })
     )
-    const products = data?.data;
 
     if (isLoading) {
         return <LoadingSpinner />
     }
-    if (error) {
-        if (error?.response?.status === 401 || 403) {
-            toast("Sorry! You don't have access authority");
-            signOut(auth);
-        }
+
+    if (error?.response?.status === (401 || 403)) {
+        toast("Sorry! You don't have access permission!");
+        signOut(auth);
+        navigate('/login')
     }
+
     return (
         <div className='relative'>
             <div className="h-[calc(100vh-115px)] overflow-auto">
@@ -53,7 +54,7 @@ const ManageProducts = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product, index) =>
+                        {data?.data?.map((product, index) =>
                             <tr key={index}>
                                 <th>{index + 1}</th>
                                 <td>{product?.name}</td>

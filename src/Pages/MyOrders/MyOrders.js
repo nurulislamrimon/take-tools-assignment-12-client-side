@@ -1,24 +1,36 @@
+import axios from 'axios';
+import { signOut } from 'firebase/auth';
 import React from 'react';
 import { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import auth from '../../firebase.init';
 import ConfirmRemoveCartItem from '../../Utilities/ConfirmRemoveCartItem';
 import LoadingSpinner from '../../Utilities/LoadingSpinner';
 
 const MyOrders = () => {
     const [user] = useAuthState(auth);
+    const navigate = useNavigate();
     const [removeItem, setRemoveItem] = useState(null);
-    const { isLoading, error, data, refetch } = useQuery(['repoData'], () =>
-        fetch(`http://localhost:5000/cartItems/${user?.email}`, {
+
+    const { isLoading, data, error, refetch } = useQuery([user], async () =>
+        await axios(`http://localhost:5000/orderItems/${user?.email}`, {
             headers: { bearer: localStorage.getItem('accessToken') }
-        }).then(res => res.json()
-        )
+        })
     )
+
     if (isLoading) {
-        <LoadingSpinner />
+        return <LoadingSpinner />
     }
+
+    if (error?.response?.status === (401 || 403)) {
+        toast('Sorry, You do not have access permission!');
+        signOut(auth);
+        navigate('/login');
+    }
+
     return (
         <section className='lg:px-10 px-5 h-[calc(100vh-115px)] overflow-auto'>
             <table className="table table-zebra w-full mt-10 lg:mt-0">
@@ -32,7 +44,7 @@ const MyOrders = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data?.map((product, index) => (
+                    {data?.data?.map((product, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>

@@ -31,27 +31,6 @@ const Login = () => {
         return <FullHLoading />
     }
 
-    /*  if (user || GoogleUser) {
-          fetch('http://localhost:5000/user', {
-             method: 'put',
-             headers: {
-                 'Content-Type': 'application/json',
-             },
-             body: JSON.stringify({ email: user?.user?.email || GoogleUser?.user?.email, displayName: user?.user?.displayName || GoogleUser?.user?.displayName, photoURL: user?.user?.photoURL || GoogleUser?.user?.photoURL })
-         })
-             .then(res => res.json())
-             .then(data => {
-                 localStorage.setItem('accessToken', data.accessToken);
-                 if (data?.result?.matchedCount) {
-                     toast(`Welcome Back Mr.${user?.user?.displayName || GoogleUser?.user?.displayName}`);
-                 } else {
-                     toast(`Thank your Mr.${user?.user?.displayName || GoogleUser?.user?.displayName || "User"} for being with us`);
-                 };
-             }) 
-     } */
-
-    // logedUser && navigate(from, { replace: true });
-
     return (
         <section className='max-w-md mx-auto'>
             <h1 className='text-center lg:text-5xl text-3xl my-5'>Login</h1>
