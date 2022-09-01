@@ -5,21 +5,20 @@ import ProductCard from '../Shared/ProductCard';
 import LoadingSpinner from '../../Utilities/LoadingSpinner';
 import useAllProducts from '../../CustomHooks/useAllProducts';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const Home = () => {
     const { products, setProducts } = useAllProducts(6);
+    const [reviews, setReviews] = useState([]);
     const carouselItems = products.slice(0, 4);
 
+    useEffect(() => {
+        fetch(`http://localhost:5000/review?limit=${6}`)
+            .then(res => res.json())
+            .then(data => setReviews(data))
+    }, [])
 
-    const firstExample = {
-        value: 2.5,
-        edit: false
-    };
-
-    const reviewSize = {
-        size: 30,
-    }
-    // if (!products[0]) { return <Loading /> }
     return (
         <div className='container mx-auto h-100 overflow-auto'>
             {/* title */}
@@ -56,7 +55,18 @@ const Home = () => {
 
             {/* Customer reviews==================== */}
             <h1 className='text-4xl text-center mt-10 mb-5 underline'>What client says about us</h1>
-            <ReactStars {...firstExample} {...reviewSize} />
+            <div className="grid grid-cols-2 gap-5 p-5">
+                {reviews?.map(review => (
+                    <div className="shadow-lg p-5">
+                        <div className="flex">
+                            <img src={review?.user?.photoURL} height={30} width={30} alt="" className='rouded-circle' />
+                            <h4 className="text-lg font-bold">{review?.user?.displayName}</h4>
+                        </div>
+                        <ReactStars value={review?.rating} edit={false} size={20} />
+                        <p>{review?.review}</p>
+                    </div>
+                ))}
+            </div>
 
             {/* About us==================== */}
             <h1 className='text-4xl text-center mt-10 mb-5 underline'>About us</h1>

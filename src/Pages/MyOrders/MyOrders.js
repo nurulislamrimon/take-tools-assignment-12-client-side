@@ -33,6 +33,7 @@ const MyOrders = () => {
 
     return (
         <section className='lg:px-10 px-5 h-[calc(100vh-115px)] overflow-auto'>
+            <h2 className='text-2xl text-center underline mb-5'>My Orders</h2>
             <table className="table table-zebra w-full mt-10 lg:mt-0">
                 <thead className="sticky top-0">
                     <tr>
