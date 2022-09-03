@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 const ConfirmRemoveCartItem = ({ product, refetch }) => {
     const handleRemoveCartItem = (id) => {
-        axios.delete(`http://localhost:5000/cartItem?id=${id}`, {
+        axios.delete(`https://take-tools.herokuapp.com/cartItem?id=${id}`, {
             headers: { bearer: localStorage.getItem('accessToken') }
         })
             .then(res => {

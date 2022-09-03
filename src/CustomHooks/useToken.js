@@ -7,7 +7,7 @@ const useToken = user => {
     const [token, setToken] = useState('');
     useEffect(() => {
         if (user) {
-            fetch('http://localhost:5000/user', {
+            fetch('https://take-tools.herokuapp.com/user', {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json',

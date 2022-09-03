@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 import ReactStars from 'react-stars';
 import { toast } from 'react-toastify';
 import auth from '../../firebase.init';
@@ -8,6 +9,7 @@ import auth from '../../firebase.init';
 const AddReview = () => {
     const [stars, setStars] = useState(0);
     const [user] = useAuthState(auth);
+    const navigate = useNavigate();
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -21,6 +23,7 @@ const AddReview = () => {
             .then(data => {
                 if (data?.acknowledged) {
                     toast('Thanks for your review')
+                    navigate('/')
                 }
             })
     }

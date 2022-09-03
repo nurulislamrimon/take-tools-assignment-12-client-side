@@ -29,7 +29,7 @@ const Purchase = () => {
     const onSubmit = (data) => {
         const { _id, ...rest } = product;
         const newCart = { ...rest, productId: _id, customer: userInfo?.email, cartQuantity: data.productQuantity }
-        fetch('http://localhost:5000/orderItem', {
+        fetch('https://take-tools.herokuapp.com/orderItem', {
             method: 'put',
             headers: { 'content-type': 'application/json', 'bearer': localStorage.getItem('accessToken') },
             body: JSON.stringify(newCart)

@@ -17,7 +17,7 @@ const ManageProducts = () => {
     const limit = 0;
 
     const { isLoading, data, error, refetch } = useQuery([user, limit], async () =>
-        await axios(`http://localhost:5000/manageProducts/${user?.email}?limit=${limit}`, {
+        await axios(`https://take-tools.herokuapp.com/manageProducts/${user?.email}?limit=${limit}`, {
             headers: { bearer: localStorage.getItem('accessToken') }
         })
     )

@@ -13,11 +13,15 @@ const useUserInfo = () => {
     const [user] = useAuthState(auth);
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({});
-    const { isLoading, error, data, refetch } = useQuery([user?.email], async () => await axios(`http://localhost:5000/user/${user?.email}`, {
-        headers: {
-            bearer: localStorage.getItem('accessToken')
+    const { isLoading, error, data, refetch } = useQuery([user?.email], () => {
+        if (user) {
+            return axios(`https://take-tools.herokuapp.com/user/${user?.email}`, {
+                headers: {
+                    bearer: localStorage.getItem('accessToken')
+                }
+            })
         }
-    })
+    }
     );
 
     useEffect(() => {

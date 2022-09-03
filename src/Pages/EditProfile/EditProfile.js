@@ -19,6 +19,8 @@ const EditProfile = () => {
     const [editName, setEditName] = useState(false);
     const [editMobile, setEditMobile] = useState(false);
     const [editAddress, setEditAddress] = useState(false);
+    const [editEducation, setEditEducation] = useState(false);
+    const [editLinkdin, setEditLinkdin] = useState(false);
     const [updateProfile] = useUpdateProfile(auth);
     const imgbbKey = '8d5dfdf2da4e4f18afbf76c977833211';
 
@@ -43,7 +45,16 @@ const EditProfile = () => {
             const { address, ...rest } = userInfo;
             setUserInfo({ address: e.target.value, ...rest })
         }
+        else if (e.target.name === 'education') {
+            const { education, ...rest } = userInfo;
+            setUserInfo({ education: e.target.value, ...rest })
+        }
+        else if (e.target.name === 'linkdin') {
+            const { linkdin, ...rest } = userInfo;
+            setUserInfo({ linkdin: e.target.value, ...rest })
+        }
     }
+
     const onSubmit = async (data) => {
         if (data.photo.length && data.name) {
             if (data.photo[0].size > 32000000) {
@@ -85,7 +96,7 @@ const EditProfile = () => {
             await updateProfile({ displayName: data.name })
         }
         const { _id, ...rest } = userInfo;
-        fetch(`http://localhost:5000/updateUser/${user?.email}`, {
+        fetch(`https://take-tools.herokuapp.com/updateUser/${user?.email}`, {
             method: 'put',
             headers: {
                 "content-type": "application/json",
@@ -135,6 +146,22 @@ const EditProfile = () => {
                     <label htmlFor="phoneNumber" className='lg:text-2xl text-lg'>Mobile :</label>
                     <input className={`ml-5 lg:text-2xl text-lg bg-white w-3/4 ${editMobile && 'input input-bordered'}`} value={userInfo?.phoneNumber} {...register("phoneNumber")} disabled={!editMobile} />
                     <svg onClick={() => setEditMobile(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${editMobile && 'hidden'}`}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
+                </div>
+                {/* education input */}
+                <div className="flex items-start">
+                    <label htmlFor="education" className='lg:text-2xl text-lg'>Education :</label>
+                    <input className={`ml-5 resize-none lg:text-2xl text-lg bg-white w-3/4 ${editEducation && 'resize input input-bordered'}`} value={userInfo?.education} {...register("education")} disabled={!editEducation} />
+                    <svg onClick={() => setEditEducation(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${editEducation && 'hidden'}`}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
+                </div>
+                {/* linkdin input */}
+                <div className="flex items-start">
+                    <label htmlFor="linkdin" className='lg:text-2xl text-lg'>Linkdin id :</label>
+                    <input className={`ml-5 resize-none lg:text-2xl text-lg bg-white w-3/4 ${editLinkdin && 'resize input input-bordered'}`} value={userInfo?.linkdin} {...register("linkdin")} disabled={!editLinkdin} />
+                    <svg onClick={() => setEditLinkdin(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${editLinkdin && 'hidden'}`}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
                 </div>

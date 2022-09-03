@@ -16,7 +16,7 @@ const MyOrders = () => {
     const [removeItem, setRemoveItem] = useState(null);
 
     const { isLoading, data, error, refetch } = useQuery([user], async () =>
-        await axios(`http://localhost:5000/orderItems/${user?.email}`, {
+        await axios(`https://take-tools.herokuapp.com/orderItems/${user?.email}`, {
             headers: { bearer: localStorage.getItem('accessToken') }
         })
     )
@@ -77,6 +77,7 @@ const MyOrders = () => {
                     ))}
                 </tbody>
             </table>
+            {!data?.data[0] && <p className='text-center mt-10'>No Order!</p>}
         </section>
     );
 };

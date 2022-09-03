@@ -21,6 +21,7 @@ import Purchase from './Pages/Purchase/Purchase';
 import EditProfile from './Pages/EditProfile/EditProfile';
 import MyProfile from './Pages/MyProfile/MyProfile';
 import AddReview from './Pages/AddReview/AddReview';
+import ManageUser from './Pages/ManageUser/ManageUser';
 
 function App() {
   return (
@@ -58,6 +59,12 @@ function App() {
               <UpdateProduct />
             </RequireAuth>
           }></Route>
+          <Route path='manageUser' element={
+            <RequireAuth>
+              <ManageUser />
+            </RequireAuth>
+          }></Route>
+
           <Route path='myOrders' element={
             <RequireAuth>
               <MyOrders />
