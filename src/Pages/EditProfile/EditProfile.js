@@ -96,7 +96,7 @@ const EditProfile = () => {
             await updateProfile({ displayName: data.name })
         }
         const { _id, ...rest } = userInfo;
-        fetch(`https://take-tools.herokuapp.com/updateUser/${user?.email}`, {
+        fetch(`http://localhost:5000/updateUser/${user?.email}`, {
             method: 'put',
             headers: {
                 "content-type": "application/json",

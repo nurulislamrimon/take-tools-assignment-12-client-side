@@ -1,10 +1,15 @@
 import axios from 'axios';
+import { signOut } from 'firebase/auth';
 import React from 'react';
 import { useQuery } from "react-query";
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import auth from '../../firebase.init';
 import LoadingSpinner from '../../Utilities/LoadingSpinner';
 
 const ManageUser = () => {
+    const navigate = useNavigate();
+
     const { isLoading, data, error, refetch } = useQuery([], async () =>
         await axios('http://localhost:5000/users', {
             headers: { bearer: localStorage.getItem('accessToken') }
@@ -12,6 +17,10 @@ const ManageUser = () => {
     )
 
     isLoading && <LoadingSpinner />
+
+    if (error?.response?.status === (401 || 403)) {
+        toast.error('Unauthorized access')
+    };
 
     const handleMakeAdmin = (email) => {
         fetch(`http://localhost:5000/admin/${email}`, {
@@ -22,17 +31,19 @@ const ManageUser = () => {
             }
         })
             .then(res => {
-                if (res.status === 401 || 403) {
-                    toast.error('Unauthorized access')
+                if (res.status === (401 || 403)) {
+                    toast.error('Unauthorized access');
+                    signOut(auth);
+                    navigate('/login');
                 }
                 return res.json()
             })
             .then(data => {
                 if (data?.modifiedCount) {
+                    refetch();
                     toast.success('New admin assigned!')
                 }
             })
-        refetch();
     }
 
     return (

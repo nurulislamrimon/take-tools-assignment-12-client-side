@@ -15,7 +15,7 @@ const useUserInfo = () => {
     const [userInfo, setUserInfo] = useState({});
     const { isLoading, error, data, refetch } = useQuery([user?.email], () => {
         if (user) {
-            return axios(`https://take-tools.herokuapp.com/user/${user?.email}`, {
+            return axios(`http://localhost:5000/user/${user?.email}`, {
                 headers: {
                     bearer: localStorage.getItem('accessToken')
                 }

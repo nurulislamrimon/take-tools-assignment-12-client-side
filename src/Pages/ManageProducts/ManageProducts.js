@@ -17,7 +17,7 @@ const ManageProducts = () => {
     const limit = 0;
 
     const { isLoading, data, error, refetch } = useQuery([user, limit], async () =>
-        await axios(`https://take-tools.herokuapp.com/manageProducts/${user?.email}?limit=${limit}`, {
+        await axios(`http://localhost:5000/manageProducts?limit=${limit}`, {
             headers: { bearer: localStorage.getItem('accessToken') }
         })
     )
@@ -27,7 +27,7 @@ const ManageProducts = () => {
     }
 
     if (error?.response?.status === (401 || 403)) {
-        toast("Sorry! You don't have access permission!");
+        toast("Unauthorized access!");
         signOut(auth);
         navigate('/login')
     }

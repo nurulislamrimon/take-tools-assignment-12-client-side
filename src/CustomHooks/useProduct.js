@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 const useProduct = (id) => {
     const [product, setProduct] = useState({});
     useEffect(() => {
-        axios(`https://take-tools.herokuapp.com/product?id=${id}`)
+        axios(`http://localhost:5000/product?id=${id}`)
             .then(res => setProduct(res?.data))
     }, [id])
     return { product, setProduct }
