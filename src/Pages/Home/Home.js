@@ -56,8 +56,8 @@ const Home = () => {
             {/* Customer reviews==================== */}
             <h1 className='text-4xl text-center mt-10 mb-5 underline'>What client says about us</h1>
             <div className="grid grid-cols-2 gap-5 p-5">
-                {reviews?.map(review => (
-                    <div className="shadow-lg p-5">
+                {reviews?.map((review, index) => (
+                    <div key={index} className="shadow-lg p-5">
                         <div className="flex">
                             <img src={review?.user?.photoURL} height={30} width={30} alt="" className='rouded-circle' />
                             <h4 className="text-lg font-bold">{review?.user?.displayName}</h4>

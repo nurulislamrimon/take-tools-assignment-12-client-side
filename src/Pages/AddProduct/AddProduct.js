@@ -13,7 +13,10 @@ const AddProduct = () => {
         const newProduct = { ...data, supplier: user?.email }
         fetch(`http://localhost:5000/addProduct`, {
             method: 'post',
-            headers: { 'content-type': 'application/json' },
+            headers: {
+                'content-type': 'application/json',
+                bearer: localStorage.getItem('accessToken')
+            },
             body: JSON.stringify(newProduct)
         })
             .then(res => res.json())

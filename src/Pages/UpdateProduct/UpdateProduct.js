@@ -60,7 +60,10 @@ const UpdateProduct = () => {
         const updatedData = { ...data, supplier: user?.email }
         fetch(`http://localhost:5000/product?id=${id}`, {
             method: 'put',
-            headers: { 'content-type': 'application/json' },
+            headers: {
+                'content-type': 'application/json',
+                bearer: localStorage.getItem('accessToken')
+            },
             body: JSON.stringify(updatedData)
         })
             .then(res => res.json())
@@ -73,7 +76,7 @@ const UpdateProduct = () => {
     }
 
     return (
-        <section>
+        <section className='h-[calc(100vh-130px)] overflow-auto'>
             <form onSubmit={handleSubmit(onSubmit)} onChange={handleChange} className='w-2/4 mx-auto'>
                 <h1 className='text-5xl text-center underline'>Update Product</h1>
                 <div className="form-control w-full">

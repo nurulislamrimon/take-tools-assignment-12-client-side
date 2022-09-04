@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import auth from '../../firebase.init';
-import ConfirmRemoveCartItem from '../../Utilities/ConfirmRemoveCartItem';
+import ConfirmRemoveCartItem from './ConfirmRemoveCartItem';
 import LoadingSpinner from '../../Utilities/LoadingSpinner';
 
 const MyOrders = () => {

@@ -5,7 +5,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useQuery } from 'react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
-import ConfirmDelete from '../../Utilities/ConfirmDelete';
+import ConfirmDelete from './ConfirmDelete';
 import LoadingSpinner from '../../Utilities/LoadingSpinner';
 import { toast } from 'react-toastify';
 import { signOut } from 'firebase/auth';

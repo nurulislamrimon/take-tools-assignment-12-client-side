@@ -22,6 +22,7 @@ import EditProfile from './Pages/EditProfile/EditProfile';
 import MyProfile from './Pages/MyProfile/MyProfile';
 import AddReview from './Pages/AddReview/AddReview';
 import ManageUser from './Pages/ManageUser/ManageUser';
+import Welcome from './Pages/Dashboard/Welcome';
 
 function App() {
   return (
@@ -44,6 +45,11 @@ function App() {
             <Dashboard />
           </RequireAuth>
         }>
+          <Route path='' element={
+            <RequireAuth>
+              <Welcome />
+            </RequireAuth>
+          }></Route>
           <Route path='manageProducts' element={
             <RequireAuth>
               <ManageProducts />
