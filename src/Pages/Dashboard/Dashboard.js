@@ -10,6 +10,7 @@ const Dashboard = () => {
         <CustomLink to='manageProducts' key='manageProducts' className='btn btn-ghost w-full'>Manage Products</CustomLink>,
         <CustomLink to='addProduct' key='addProduct' className='btn btn-ghost w-full'>Add Product</CustomLink>,
         <CustomLink to='manageUser' key='manageUser' className='btn btn-ghost w-full'>Manage User</CustomLink>,
+        <CustomLink to='manageOrder' key='manageOrder' className='btn btn-ghost w-full'>Manage Order</CustomLink>,
         <CustomLink to='myProfile' key='myProfile' className='btn btn-ghost w-full'>My Profile</CustomLink>]
     const customerMenus = [
         <CustomLink to='myOrders' key='myOrders' className='btn btn-ghost w-full'>My Orders</CustomLink>,

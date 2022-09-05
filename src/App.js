@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import UpdateProduct from './Pages/UpdateProduct/UpdateProduct';
 import RequireAuth from './Utilities/RequireAuth';
-import About from './Pages/About/About';
+import MyPortfolio from './Pages/MyPortfolio/MyPortfolio';
 import AddProduct from './Pages/AddProduct/AddProduct';
 import AllProducts from './Pages/AllProducts/AllProducts';
 import ManageProducts from './Pages/ManageProducts/ManageProducts';
@@ -23,6 +23,7 @@ import MyProfile from './Pages/MyProfile/MyProfile';
 import AddReview from './Pages/AddReview/AddReview';
 import ManageUser from './Pages/ManageUser/ManageUser';
 import Welcome from './Pages/Dashboard/Welcome';
+import ManageOrder from './Pages/ManageOrder/ManageOrder';
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />}></Route>
         <Route path='/blogs' element={<Blogs />}></Route>
-        <Route path='/about' element={<About />}></Route>
+        <Route path='/myPortfolio' element={<MyPortfolio />}></Route>
         <Route path='/allProducts' element={<AllProducts />}></Route>
         <Route path='/editProfile' element={
           <RequireAuth>
@@ -68,6 +69,11 @@ function App() {
           <Route path='manageUser' element={
             <RequireAuth>
               <ManageUser />
+            </RequireAuth>
+          }></Route>
+          <Route path='manageOrder' element={
+            <RequireAuth>
+              <ManageOrder />
             </RequireAuth>
           }></Route>
 

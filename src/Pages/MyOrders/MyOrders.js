@@ -33,6 +33,12 @@ const MyOrders = () => {
 
     return (
         <section className='lg:px-10 px-5 h-[calc(100vh-115px)] overflow-auto'>
+            {/* dashboard menu expander */}
+            <label htmlFor="dashboard-sidebar" className="drawer-button lg:hidden absolute left-5">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+            </label>
             <h2 className='text-2xl text-center underline mb-5'>My Orders</h2>
             <table className="table table-zebra w-full mt-10 lg:mt-0">
                 <thead className="sticky top-0">

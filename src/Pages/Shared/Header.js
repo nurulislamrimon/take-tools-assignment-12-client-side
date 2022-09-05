@@ -2,7 +2,6 @@ import { signOut } from 'firebase/auth';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
-import useUserInfo from '../../CustomHooks/useUserInfo';
 import auth from '../../firebase.init';
 import CustomLink from '../../Utilities/CustomLink';
 
@@ -14,7 +13,7 @@ const Header = () => {
         <CustomLink to='/' key={1} className='p-3 btn btn-ghost'>Home</CustomLink>,
         <CustomLink to='/allProducts' key='products' className='p-3 btn btn-ghost'>Products</CustomLink>,
         <CustomLink to='/blogs' key={2} className='p-3 btn btn-ghost'>Blogs</CustomLink>,
-        <CustomLink to='/about' key={3} className='p-3 btn btn-ghost'>About</CustomLink>,
+        <CustomLink to='/myPortfolio' key={3} className='p-3 btn btn-ghost'>My Portfolio</CustomLink>,
         user?.uid ?
             <div key={5} className='lg:flex'>
                 <CustomLink to='/dashboard' key='dashboard' className='p-3 btn btn-ghost'>Dashboard</CustomLink>
