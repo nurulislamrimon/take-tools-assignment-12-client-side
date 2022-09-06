@@ -11,7 +11,7 @@ const MakeAdmin = ({ user, refetch }) => {
         fetch(`http://localhost:5000/admin/${email}`, {
             method: 'put',
             headers: {
-                bearer: localStorage.getItem('accessToken'),
+                authentication: localStorage.getItem('accessToken'),
                 "content-type": "application/json"
             }
         })

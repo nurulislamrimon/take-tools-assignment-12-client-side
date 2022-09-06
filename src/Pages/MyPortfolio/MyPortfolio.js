@@ -43,7 +43,7 @@ const MyPortfolio = () => {
                 <h2 className='text-2xl uppercase text-center underline mt-5 font-medium'>Projects I've Done!</h2>
                 <ul className='list-decimal p-10 grid lg:grid-cols-2 mx-auto gap-10 items-center'>
                     <li className='shadow-lg'><a href="https://ak-timemachine.netlify.app/" target="_blank" rel='noreferrer' className='hover:text-primary hover:underline'>
-                        <p className="text-xl font-bold">Time Machine (Count your freelance time and earned amount.)</p>
+                        <p className="text-xl font-bold">Time Machine (Count your freelance time and earned amount)</p>
                         <img src="/Projects-img/time-machine.png" alt="" />
                     </a>
                     </li>

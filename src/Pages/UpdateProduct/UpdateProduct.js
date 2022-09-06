@@ -62,7 +62,7 @@ const UpdateProduct = () => {
             method: 'put',
             headers: {
                 'content-type': 'application/json',
-                bearer: localStorage.getItem('accessToken')
+                authentication: localStorage.getItem('accessToken')
             },
             body: JSON.stringify(updatedData)
         })

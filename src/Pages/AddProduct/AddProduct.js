@@ -15,7 +15,7 @@ const AddProduct = () => {
             method: 'post',
             headers: {
                 'content-type': 'application/json',
-                bearer: localStorage.getItem('accessToken')
+                authentication: localStorage.getItem('accessToken')
             },
             body: JSON.stringify(newProduct)
         })

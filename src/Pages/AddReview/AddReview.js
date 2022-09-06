@@ -46,8 +46,8 @@ const AddReview = () => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="review" className='text-lg lg:text-xl mr-5'>Don't shy to share your experience </label>
-                    <div class="form-control">
-                        <textarea class="textarea textarea-bordered h-24" name='review' placeholder="Write what is in your mind"></textarea>
+                    <div className="form-control">
+                        <textarea className="textarea textarea-bordered h-24" name='review' placeholder="Write what is in your mind"></textarea>
                     </div>
                 </div>
                 <button className='btn btn-primary mx-auto w-full mt-5'>Submit</button>

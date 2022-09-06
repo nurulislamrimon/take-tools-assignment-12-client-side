@@ -6,7 +6,7 @@ const ConfirmCancelOrder = ({ order, refetch }) => {
     const handleDelete = (id) => {
         console.log(id);
         // axios.delete(`http://localhost:5000/product?id=${id}`, {
-        //     headers: { bearer: localStorage.getItem('accessToken') }
+        //     headers: { authentication: localStorage.getItem('accessToken') }
         // })
         //     .then(res => {
         //         if (res?.data?.deletedCount) { toast('Product deleted successfully') }

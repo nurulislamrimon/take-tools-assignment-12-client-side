@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 const ConfirmRemoveCartItem = ({ product, refetch }) => {
     const handleRemoveCartItem = (id) => {
         axios.delete(`http://localhost:5000/cartItem?id=${id}`, {
-            headers: { bearer: localStorage.getItem('accessToken') }
+            headers: { authentication: localStorage.getItem('accessToken') }
         })
             .then(res => {
                 if (res?.data?.deletedCount) { toast('A product has been removed from your cart') }

@@ -17,7 +17,7 @@ const MyOrders = () => {
 
     const { isLoading, data, error, refetch } = useQuery([user], async () =>
         await axios(`http://localhost:5000/orderItems/${user?.email}`, {
-            headers: { bearer: localStorage.getItem('accessToken') }
+            headers: { authentication: localStorage.getItem('accessToken') }
         })
     )
 

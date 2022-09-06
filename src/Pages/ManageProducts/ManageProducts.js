@@ -18,7 +18,7 @@ const ManageProducts = () => {
 
     const { isLoading, data, error, refetch } = useQuery([user, limit], async () =>
         await axios(`http://localhost:5000/manageProducts?limit=${limit}`, {
-            headers: { bearer: localStorage.getItem('accessToken') }
+            headers: { authentication: localStorage.getItem('accessToken') }
         })
     )
 

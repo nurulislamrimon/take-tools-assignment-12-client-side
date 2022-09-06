@@ -10,22 +10,28 @@ import { useEffect } from 'react';
 
 const Login = () => {
     const navigate = useNavigate();
+    const { updateNewUserData } = useToken();
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
-
     const [signInWithGoogle, GoogleUser, GoogleLoading, GoogleError] = useSignInWithGoogle(auth);
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
-    const { token, setToken } = useToken(user || GoogleUser);
-    const [logedUser] = useAuthState(auth);
-
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const [logedUser] = useAuthState(auth);
 
     const onSubmit = ({ email, password }) => {
         signInWithEmailAndPassword(email, password);
     }
+
     useEffect(() => {
-        if (logedUser) { navigate(from, { replace: true }) }
-    }, [logedUser, from, navigate])
+        if (user?.user?.displayName || GoogleUser?.user?.displayName || logedUser?.displayName) {
+            const token = updateNewUserData(user || GoogleUser);
+            if (token) {
+                token && navigate(from, { replace: true });
+            }
+        }
+    }, [user, GoogleUser, logedUser, updateNewUserData, navigate, from]);
+
+    logedUser && navigate(from, { replace: true })
 
     if (loading || GoogleLoading) {
         return <FullHLoading />

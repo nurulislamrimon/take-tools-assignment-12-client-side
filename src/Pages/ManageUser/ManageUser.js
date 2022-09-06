@@ -13,7 +13,7 @@ const ManageUser = () => {
 
     const { isLoading, data, error, refetch } = useQuery([], async () =>
         await axios('http://localhost:5000/users', {
-            headers: { bearer: localStorage.getItem('accessToken') }
+            headers: { authentication: localStorage.getItem('accessToken') }
         })
     )
 

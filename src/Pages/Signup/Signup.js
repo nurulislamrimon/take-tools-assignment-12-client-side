@@ -1,54 +1,46 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAuthState, useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { useNavigate } from 'react-router-dom';
 import FullHLoading from '../../Utilities/FullHLoading';
-import { toast } from 'react-toastify';
-import LoadingSpinner from '../../Utilities/LoadingSpinner';
 import useToken from '../../CustomHooks/useToken';
 import { useEffect } from 'react';
+import useGenerateImgLink from '../../CustomHooks/useGenerateImgLink';
 
 const Signup = () => {
     const [newError, setNewError] = useState('');
+    const { updateNewUserData } = useToken();
     const navigate = useNavigate();
-    const imgbbKey = '8d5dfdf2da4e4f18afbf76c977833211';
-    const formData = new FormData();
+    const { generateImgLink } = useGenerateImgLink();
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
-    const [updateProfile, updating, UpdateError] = useUpdateProfile(auth);
+    const [updateProfile] = useUpdateProfile(auth);
     const [signInWithGoogle, GoogleUser, GoogleLoading, GoogleError] = useSignInWithGoogle(auth);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const { token, setToken } = useToken(user || GoogleUser);
-    const [logedUser] = useAuthState(auth);
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = async ({ name, email, password, confirmPassword, photo }) => {
-        if (password !== confirmPassword) {
+    const onSubmit = async (data) => {
+        if (data?.password !== data?.confirmPassword) {
             return setNewError("Both of your password didn't match")
         }
-        if (photo[0].size > 32000000) {
+        if (data?.photo[0].size > 32000000) {
             return setNewError('Photo size should be less than 32MB')
         }
-
-
-        formData.append("image", photo[0]);
-
-        fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-            method: "POST",
-            body: formData
-        })
-            .then(async res => res.json())
-            .then(async data => {
-                await createUserWithEmailAndPassword(email, password);
-                await updateProfile({ displayName: name, photoURL: data?.data?.url })
-            }
-            )
-            .catch(console.dir)
-
+        const url = await generateImgLink(data);
+        if (url) {
+            await createUserWithEmailAndPassword(data?.email, data?.password);
+            await updateProfile({ displayName: data?.name, photoURL: url });
+        }
     }
 
     useEffect(() => {
-        logedUser && navigate('/');
-    }, [logedUser, navigate])
+        if (user?.user?.displayName || GoogleUser?.user?.displayName) {
+            const token = updateNewUserData(user || GoogleUser);
+            if (token) {
+                token && navigate('/');
+            }
+
+        }
+    }, [user, GoogleUser, updateNewUserData, navigate])
 
     if (loading || GoogleLoading) { return <FullHLoading /> };
 

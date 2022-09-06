@@ -17,17 +17,16 @@ const useUserInfo = () => {
         if (user) {
             return axios(`http://localhost:5000/user/${user?.email}`, {
                 headers: {
-                    bearer: localStorage.getItem('accessToken')
+                    authentication: localStorage.getItem('accessToken')
                 }
             })
         }
     }
     );
-
+    isLoading && <LoadingSpinner />
     useEffect(() => {
         setUserInfo(data?.data)
     }, [data])
-    isLoading && <LoadingSpinner />
 
     if (error?.response?.status === (401 || 403)) {
         toast('Unauthorized access')

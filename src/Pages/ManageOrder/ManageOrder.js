@@ -15,7 +15,7 @@ const ManageOrder = () => {
 
     const { data, isLoading, error, refetch } = useQuery([], async () =>
         await axios('http://localhost:5000/orderItems', {
-            headers: { bearer: localStorage.getItem('accessToken') }
+            headers: { authentication: localStorage.getItem('accessToken') }
         })
     )
     isLoading && <LoadingSpinner />

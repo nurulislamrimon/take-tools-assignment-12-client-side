@@ -1,33 +1,32 @@
 import React from 'react';
 import { useState } from 'react';
-import { useAuthState, useUpdateProfile } from 'react-firebase-hooks/auth';
+import { useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import useGenerateImgLink from '../../CustomHooks/useGenerateImgLink';
+import useUpdateMyProfile from '../../CustomHooks/useUpdateMyProfile';
 import useUserInfo from '../../CustomHooks/useUserInfo';
 import auth from '../../firebase.init';
 import FullHLoading from '../../Utilities/FullHLoading';
 
 const EditProfile = () => {
     const { userInfo, setUserInfo, refetch, isLoading } = useUserInfo();
-    const [user] = useAuthState(auth);
-    const formData = new FormData();
+    const { generateImgLink } = useGenerateImgLink();
     const location = useLocation();
     const navigate = useNavigate();
     let from = location.state?.from?.pathname || "/dashboard/myProfile";
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [editName, setEditName] = useState(false);
     const [editMobile, setEditMobile] = useState(false);
     const [editAddress, setEditAddress] = useState(false);
     const [editEducation, setEditEducation] = useState(false);
     const [editLinkdin, setEditLinkdin] = useState(false);
     const [updateProfile] = useUpdateProfile(auth);
-    const imgbbKey = '8d5dfdf2da4e4f18afbf76c977833211';
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { updateMyProfile } = useUpdateMyProfile();
 
 
-    if (isLoading) {
-        return <FullHLoading />
-    }
+
     const handleChange = (e) => {
         if (e.target.name === 'photo') {
             const { photoURL, ...rest } = userInfo;
@@ -60,58 +59,37 @@ const EditProfile = () => {
             if (data.photo[0].size > 32000000) {
                 return toast('Photo size should be less than 32MB')
             }
-            formData.append("image", data.photo[0]);
-            fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-                method: "POST",
-                body: formData
-            })
-                .then(async res => res.json())
-                .then(async data => {
-                    await updateProfile({ displayName: data.name, photoURL: data?.data?.url })
-                    const { photoURL, ...rest } = userInfo;
-                    setUserInfo({ photoURL: data?.data?.url, ...rest })
-                }
-                )
-                .catch(console.dir)
+            const url = await generateImgLink(data);
+            if (url) {
+                const { _id, photoURL, ...rest } = userInfo;
+                await updateMyProfile({ photoURL: url, ...rest })
+                await updateProfile({ displayName: data.name, photoURL: url })
+            }
+
         }
         else if (data.photo.length) {
             if (data.photo[0].size > 32000000) {
                 return toast('Photo size should be less than 32MB')
             }
-            formData.append("image", data.photo[0]);
-            fetch(`https://api.imgbb.com/1/upload?key=${imgbbKey}`, {
-                method: "POST",
-                body: formData
-            })
-                .then(async res => res.json())
-                .then(async data => {
-                    await updateProfile({ photoURL: data?.data?.url })
-                    const { photoURL, ...rest } = userInfo;
-                    setUserInfo({ photoURL: data?.data?.url, ...rest })
-                }
-                )
-                .catch(console.dir)
+            const url = await generateImgLink(data);
+            if (url) {
+                const { _id, photoURL, ...rest } = userInfo;
+                await updateMyProfile({ photoURL: url, ...rest })
+                await updateProfile({ photoURL: url })
+            }
+
         }
         else if (data.name) {
+            const { _id, ...rest } = userInfo;
+            await updateMyProfile(rest)
             await updateProfile({ displayName: data.name })
         }
-        const { _id, ...rest } = userInfo;
-        fetch(`http://localhost:5000/updateUser/${user?.email}`, {
-            method: 'put',
-            headers: {
-                "content-type": "application/json",
-                "bearer": localStorage.getItem('accessToken')
-            },
-            body: JSON.stringify(rest)
-        })
-            .then(res => res.json())
-            .then(d => {
-                if (d.modifiedCount || d.upsertedCount) {
-                    toast('Your profile information updated')
-                }
-            })
         refetch();
         navigate(from);
+    }
+
+    if (isLoading) {
+        return <FullHLoading />
     }
     return (
         <div>
@@ -131,12 +109,12 @@ const EditProfile = () => {
                 {/* email input */}
                 <div className="flex items-start">
                     <label htmlFor="email" className='lg:text-2xl text-lg'>Email :</label>
-                    <input className={`ml-5 lg:text-2xl text-lg bg-white w-3/4 ${editName && 'input-bordered'}`} value={userInfo?.email} {...register("email")} disabled />
+                    <input className={`ml-5 lg:text-2xl text-lg bg-white w-3/4 ${editName && 'input-bordered'}`} value={userInfo?.email || ''} {...register("email")} disabled />
                 </div>
                 {/* name input */}
                 <div className="flex items-start">
                     <label htmlFor="name" className='lg:text-2xl text-lg'>Name :</label>
-                    <input className={`ml-5 lg:text-2xl text-lg bg-white w-3/4 ${editName && 'input input-bordered'}`} value={userInfo?.displayName} {...register("name")} disabled={!editName} />
+                    <input className={`ml-5 lg:text-2xl text-lg bg-white w-3/4 ${editName && 'input input-bordered'}`} value={userInfo?.displayName || ''} {...register("name")} disabled={!editName} />
                     <svg onClick={() => setEditName(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${editName && 'hidden'}`}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
@@ -144,7 +122,7 @@ const EditProfile = () => {
                 {/* phoneNumber input */}
                 <div className="flex items-start">
                     <label htmlFor="phoneNumber" className='lg:text-2xl text-lg'>Mobile :</label>
-                    <input className={`ml-5 lg:text-2xl text-lg bg-white w-3/4 ${editMobile && 'input input-bordered'}`} value={userInfo?.phoneNumber} {...register("phoneNumber")} disabled={!editMobile} />
+                    <input className={`ml-5 lg:text-2xl text-lg bg-white w-3/4 ${editMobile && 'input input-bordered'}`} value={userInfo?.phoneNumber || ''} {...register("phoneNumber")} disabled={!editMobile} />
                     <svg onClick={() => setEditMobile(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${editMobile && 'hidden'}`}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
@@ -152,7 +130,7 @@ const EditProfile = () => {
                 {/* education input */}
                 <div className="flex items-start">
                     <label htmlFor="education" className='lg:text-2xl text-lg'>Education :</label>
-                    <input className={`ml-5 resize-none lg:text-2xl text-lg bg-white w-3/4 ${editEducation && 'resize input input-bordered'}`} value={userInfo?.education} {...register("education")} disabled={!editEducation} />
+                    <input className={`ml-5 resize-none lg:text-2xl text-lg bg-white w-3/4 ${editEducation && 'resize input input-bordered'}`} value={userInfo?.education || ''} {...register("education")} disabled={!editEducation} />
                     <svg onClick={() => setEditEducation(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${editEducation && 'hidden'}`}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
@@ -160,7 +138,7 @@ const EditProfile = () => {
                 {/* linkdin input */}
                 <div className="flex items-start">
                     <label htmlFor="linkdin" className='lg:text-2xl text-lg'>Linkdin id :</label>
-                    <input className={`ml-5 resize-none lg:text-2xl text-lg bg-white w-3/4 ${editLinkdin && 'resize input input-bordered'}`} value={userInfo?.linkdin} {...register("linkdin")} disabled={!editLinkdin} />
+                    <input className={`ml-5 resize-none lg:text-2xl text-lg bg-white w-3/4 ${editLinkdin && 'resize input input-bordered'}`} value={userInfo?.linkdin || ''} {...register("linkdin")} disabled={!editLinkdin} />
                     <svg onClick={() => setEditLinkdin(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${editLinkdin && 'hidden'}`}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
@@ -168,7 +146,7 @@ const EditProfile = () => {
                 {/* address input */}
                 <div className="flex items-start">
                     <label htmlFor="address" className='lg:text-2xl text-lg'>Address :</label>
-                    <textarea className={`ml-5 resize-none lg:text-2xl text-lg bg-white w-3/4 ${editAddress && 'resize input input-bordered'}`} value={userInfo?.address} {...register("address")} disabled={!editAddress} />
+                    <textarea className={`ml-5 resize-none lg:text-2xl text-lg bg-white w-3/4 ${editAddress && 'resize input input-bordered'}`} value={userInfo?.address || ''} {...register("address")} disabled={!editAddress} />
                     <svg onClick={() => setEditAddress(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={`w-6 h-6 cursor-pointer ${editAddress && 'hidden'}`}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
