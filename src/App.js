@@ -24,6 +24,7 @@ import AddReview from './Pages/AddReview/AddReview';
 import ManageUser from './Pages/ManageUser/ManageUser';
 import Welcome from './Pages/Dashboard/Welcome';
 import ManageOrder from './Pages/ManageOrder/ManageOrder';
+import Payment from './Pages/Payment/Payment';
 
 function App() {
   return (
@@ -76,10 +77,15 @@ function App() {
               <ManageOrder />
             </RequireAuth>
           }></Route>
-
+          {/* customer------------------------ */}
           <Route path='myOrders' element={
             <RequireAuth>
               <MyOrders />
+            </RequireAuth>
+          }></Route>
+          <Route path='payment/:id' element={
+            <RequireAuth>
+              <Payment />
             </RequireAuth>
           }></Route>
           <Route path='addReview' element={

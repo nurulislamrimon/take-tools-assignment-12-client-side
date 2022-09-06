@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import useUserInfo from '../../CustomHooks/useUserInfo';
 import UpdateProfileToast from '../../Utilities/UpdateProfileToast';
+import { signOut } from 'firebase/auth';
+import auth from '../../firebase.init';
 
 const Purchase = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -31,10 +33,20 @@ const Purchase = () => {
         const newCart = { ...rest, productId: _id, customer: userInfo?.email, cartQuantity: data.productQuantity }
         fetch('http://localhost:5000/orderItem', {
             method: 'put',
-            headers: { 'content-type': 'application/json', 'bearer': localStorage.getItem('accessToken') },
+            headers: {
+                'content-type': 'application/json',
+                authentication: localStorage.getItem('accessToken')
+            },
             body: JSON.stringify(newCart)
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res?.status === (401 || 403)) {
+                    toast('Unauthorized access');
+                    signOut(auth);
+                    navigate('/login')
+                }
+                return res.json()
+            })
             .then(data => {
                 if (data?.upsertedCount) {
                     toast('New product is added on your cart!')

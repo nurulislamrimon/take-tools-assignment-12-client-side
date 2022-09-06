@@ -22,8 +22,10 @@ const Login = () => {
         signInWithEmailAndPassword(email, password);
     }
 
+    logedUser && navigate(from, { replace: true })
+
     useEffect(() => {
-        if (user?.user?.displayName || GoogleUser?.user?.displayName || logedUser?.displayName) {
+        if (user?.user?.displayName || GoogleUser?.user?.displayName) {
             const token = updateNewUserData(user || GoogleUser);
             if (token) {
                 token && navigate(from, { replace: true });
@@ -31,7 +33,6 @@ const Login = () => {
         }
     }, [user, GoogleUser, logedUser, updateNewUserData, navigate, from]);
 
-    logedUser && navigate(from, { replace: true })
 
     if (loading || GoogleLoading) {
         return <FullHLoading />
