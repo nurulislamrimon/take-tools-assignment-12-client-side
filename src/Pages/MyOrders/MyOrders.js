@@ -30,7 +30,6 @@ const MyOrders = () => {
         signOut(auth);
         navigate('/login');
     }
-
     return (
         <section className='lg:px-10 px-5 h-[calc(100vh-115px)] overflow-auto'>
             {/* dashboard menu expander */}
@@ -47,35 +46,32 @@ const MyOrders = () => {
                         <th>Product Photo</th>
                         <th>Order info</th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {data?.data?.map((product, index) => (
+                    {data?.data?.map((order, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td>
-                                <img src={product?.picture} className='h-24' alt="img" />
+                                <img src={order?.picture} className='h-24' alt="img" />
                             </td>
                             <td>
                                 <div className="flex">
-                                    <Link to={`/product/${product?.productId}`} className='text-2xl mr-5 underline hover:text-blue-800' title='Click here to edit'>{product?.name}</Link>
+                                    <Link to={`/product/${order?.productId}`} className='text-2xl mr-5 underline hover:text-blue-800' title='Click here to edit'>{order?.name}</Link>
 
                                 </div>
-                                <p>Price: ${product?.price}</p>
-                                <p>Cart item: {product?.cartQuantity}pcs</p>
-                                <p>Total Price: ${parseFloat(product?.price) * parseInt(product?.cartQuantity)}</p>
+                                <p>Price: ${order?.price}</p>
+                                <p>Cart item: {order?.cartQuantity}pcs</p>
+                                <p>Total Price: ${parseFloat(order?.price) * parseInt(order?.cartQuantity)}</p>
                             </td>
                             <td>
-                                {!product?.paid && <Link to={`/dashboard/payment/${product._id}`} className='btn'>Pay</Link>}
-                            </td>
-                            <td>
-                                {/* delete btn */}
-                                <label htmlFor="confirmRemoveCartItem">
-                                    <svg title='Remove this item' onClick={() => setRemoveItem(product)} xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 hover:text-warning mt-2 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </label>
+                                {!order?.paid ? <div className='flex justify-around'>
+                                    <Link to={`/dashboard/payment/${order._id}`} className='btn'>Pay</Link>
+                                    <label htmlFor="confirmRemoveCartItem">
+                                        <svg title='Remove this item' onClick={() => setRemoveItem(order)} xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 hover:text-warning mt-2 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </label></div> : <div><span className='text-success text-xl mr-3'>Paid</span>Trx ID: {order?.trxId}</div>}
                                 {removeItem && <ConfirmRemoveCartItem product={removeItem} refetch={refetch} />}
                             </td>
                         </tr>
