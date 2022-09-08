@@ -32,7 +32,7 @@ const Purchase = () => {
         const { _id, ...rest } = product;
         const newCart = { ...rest, productId: _id, customer: userInfo?.email, cartQuantity: data.productQuantity }
         fetch('http://localhost:5000/orderItem', {
-            method: 'put',
+            method: 'post',
             headers: {
                 'content-type': 'application/json',
                 authentication: localStorage.getItem('accessToken')
@@ -48,14 +48,9 @@ const Purchase = () => {
                 return res.json()
             })
             .then(data => {
-                if (data?.upsertedCount) {
-                    toast('New product is added on your cart!')
-                }
-                else if (data?.modifiedCount) {
-                    toast('You made a new change at this product on your cart!')
-                }
-                else {
-                    toast('You already added this product on your cart!')
+                console.log(data);
+                if (data?.acknowledged) {
+                    toast('New product is added on your order list!')
                 }
             })
         navigate('/dashboard/myOrders')

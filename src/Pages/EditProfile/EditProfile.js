@@ -81,8 +81,12 @@ const EditProfile = () => {
         }
         else if (data.name) {
             const { _id, ...rest } = userInfo;
-            await updateMyProfile(rest)
+            await updateMyProfile(rest);
             await updateProfile({ displayName: data.name })
+        }
+        else {
+            const { _id, ...rest } = userInfo;
+            await updateMyProfile(rest);
         }
         refetch();
         navigate(from);
