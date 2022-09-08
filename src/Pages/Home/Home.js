@@ -7,6 +7,7 @@ import useAllProducts from '../../CustomHooks/useAllProducts';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { FaUsers, FaRegMap, FaHammer } from 'react-icons/fa';
 
 const Home = () => {
     const { products, setProducts } = useAllProducts(6);
@@ -14,7 +15,7 @@ const Home = () => {
     const carouselItems = products.slice(0, 4);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/review?limit=${6}`)
+        fetch(`http://localhost:5000/review?limit=${0}`)
             .then(res => res.json())
             .then(data => setReviews(data))
     }, [])
@@ -53,6 +54,32 @@ const Home = () => {
                 {products.map((product, index) => <ProductCard key={index} product={product}></ProductCard>)}
             </section>
 
+            {/* About us==================== */}
+            <h1 className='text-4xl text-center mt-10 mb-5 underline'>Million Business Trust us</h1>
+            <p className='text-2xl text-center'>Customers satisfaction is our main priority</p>
+            <section className='grid lg:grid-cols-3 justify-center gap-10 py-10'>
+                <div className="card w-96">
+                    <FaRegMap className='h-20 w-20 mx-auto' />
+                    <h1 className='text-center text-3xl font-bold'>
+                        44+
+                    </h1>
+                    <p className='font-bold text-center'>Countries</p>
+                </div>
+                <div className="card w-96">
+                    <FaHammer className='h-20 w-20 mx-auto' />
+                    <h1 className='text-center text-3xl font-bold'>
+                        50+
+                    </h1>
+                    <p className='font-bold text-center'>Products</p>
+                </div>
+                <div className="card w-96">
+                    <FaUsers className='h-20 w-20 mx-auto' />
+                    <h1 className='text-center text-3xl font-bold'>
+                        150+
+                    </h1>
+                    <p className='font-bold text-center'>Happy Clients</p>
+                </div>
+            </section>
             {/* Customer reviews==================== */}
             <h1 className='text-4xl text-center mt-10 mb-5 underline'>What client says about us</h1>
             <div className="grid grid-cols-2 gap-5 p-5">
@@ -67,11 +94,14 @@ const Home = () => {
                     </div>
                 ))}
             </div>
-
-            {/* About us==================== */}
-            <h1 className='text-4xl text-center mt-10 mb-5 underline'>About us</h1>
-
-
+            {/* any query */}
+            <section className='w-3/4 shadow-xl mx-auto p-5 mb-5'>
+                <h2 className='text-3xl'>Don't hesitate to contact with us for any complaint or query</h2>
+                <div className="ml-auto w-fit my-5">
+                    <Link to='/dashboard/addReview' className='btn btn-secondary mr-5'>Submit a review</Link>
+                    <a href="mailto:nurulislamrimon@gmail.com"><button className='btn btn-primary'>Contact us</button></a>
+                </div>
+            </section>
         </div>
     );
 };
