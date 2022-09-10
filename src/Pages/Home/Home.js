@@ -7,6 +7,7 @@ import useAllProducts from '../../CustomHooks/useAllProducts';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import CountUp from 'react-countup';
 import { FaUsers, FaRegMap, FaHammer } from 'react-icons/fa';
 
 const Home = () => {
@@ -21,7 +22,7 @@ const Home = () => {
     }, [])
 
     return (
-        <div className='container mx-auto h-100 overflow-auto'>
+        <div className='container mx-auto h-100'>
             {/* title */}
             <SetTitle>Home</SetTitle>
 
@@ -54,53 +55,79 @@ const Home = () => {
                 {products.map((product, index) => <ProductCard key={index} product={product}></ProductCard>)}
             </section>
 
+            {/* our technology */}
+            <section>
+                <h1 className="text-4xl text-center py-5">Our Technology</h1>
+                <div className="lg:flex items-center justify-around px-5">
+                    <article className='lg:w-2/4 mx-auto'>
+                        <h4 className="font-bold text-center">The best technology guarantee!</h4>
+                        <p className='text-center'>We have the best tools production technology. Customer satisfaction is our main priority, that's why we have all kind of technological support for you. We are updating our technology with modern world.</p>
+                    </article>
+                    <iframe className='rounded-2xl w-full lg:w-2/4' width="560" height="315" src="https://www.youtube.com/embed/i-PgeWbDgq4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </section>
+
+            {/* shipping */}
+            <section className='mt-5'>
+                <h1 className="text-4xl text-center py-5">Fast shipping Service</h1>
+                <div className="lg:flex items-center justify-around px-5">
+                    <article className='lg:w-2/4 mx-auto lg:order-2'>
+                        <h4 className="font-bold text-center">Get the best shipping service all over the world!</h4>
+                        <p className='text-center'>Get your product from your door step with fast and high security delivery service of take-tools.</p>
+                    </article>
+                    <img className='lg:order-1 w-full lg:w-2/4' src="http://hi-light.tki.tw/public/photo/form/143629016820275.jpg" alt="" />
+                </div>
+            </section>
+
             {/* About us==================== */}
-            <h1 className='text-4xl text-center mt-10 mb-5 underline'>Million Business Trust us</h1>
+            <h1 className='text-4xl text-center mt-10'>Million Business Trust us</h1>
             <p className='text-2xl text-center'>Customers satisfaction is our main priority</p>
             <section className='grid lg:grid-cols-3 justify-center gap-10 py-10'>
                 <div className="card w-96">
                     <FaRegMap className='h-20 w-20 mx-auto' />
                     <h1 className='text-center text-3xl font-bold'>
-                        44+
+                        <CountUp end={44} duration={4} />
+                        +
                     </h1>
                     <p className='font-bold text-center'>Countries</p>
                 </div>
                 <div className="card w-96">
                     <FaHammer className='h-20 w-20 mx-auto' />
                     <h1 className='text-center text-3xl font-bold'>
-                        50+
+                        <CountUp end={50} duration={5} />
+                        +
                     </h1>
                     <p className='font-bold text-center'>Products</p>
                 </div>
                 <div className="card w-96">
                     <FaUsers className='h-20 w-20 mx-auto' />
                     <h1 className='text-center text-3xl font-bold'>
-                        150+
+                        <CountUp end={150} duration={7} />
+                        +
                     </h1>
                     <p className='font-bold text-center'>Happy Clients</p>
                 </div>
             </section>
             {/* Customer reviews==================== */}
             <h1 className='text-4xl text-center mt-10 mb-5 underline'>What client says about us</h1>
-            <div className="grid grid-cols-2 gap-5 p-5">
+            <div className="grid lg:grid-cols-2 gap-5 p-5">
                 {reviews?.map((review, index) => (
                     <div key={index} className="shadow-lg p-5">
-                        <div className="flex">
-                            <img src={review?.user?.photoURL} height={30} width={30} alt="" className='rouded-circle' />
-                            <h4 className="text-lg font-bold">{review?.user?.displayName}</h4>
+                        <div className="flex items-center">
+                            <img src={review?.user?.photoURL} alt="" className='rounded-full h-12 w-12' />
+                            <h4 className="text-lg font-bold ml-3">{review?.user?.displayName}</h4>
                         </div>
                         <ReactStars value={review?.rating} edit={false} size={20} />
                         <p>{review?.review}</p>
                     </div>
                 ))}
             </div>
+
             {/* any query */}
-            <section className='w-3/4 shadow-xl mx-auto p-5 mb-5'>
-                <h2 className='text-3xl'>Don't hesitate to contact with us for any complaint or query</h2>
-                <div className="ml-auto w-fit my-5">
-                    <Link to='/dashboard/addReview' className='btn btn-secondary mr-5'>Submit a review</Link>
-                    <a href="mailto:nurulislamrimon@gmail.com"><button className='btn btn-primary'>Contact us</button></a>
-                </div>
+            <section className='flex items-end lg:items-center justify-around lg:w-3/4 shadow-xl mx-auto p-5 mb-5'>
+                <h2 className='text-md lg:text-xl'>Don't hesitate to contact with us for any complaint or query</h2>
+                <Link to='/dashboard/addReview' className='btn btn-secondary btn-xs mr-5'>Submit a review</Link>
+                <a href="mailto:nurulislamrimon@gmail.com"><button className='btn btn-primary btn-xs'>Contact us</button></a>
             </section>
         </div>
     );
