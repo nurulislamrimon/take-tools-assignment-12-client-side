@@ -4,15 +4,14 @@ import { toast } from 'react-toastify';
 
 const ConfirmCancelOrder = ({ order, refetch }) => {
     const handleDelete = (id) => {
-        console.log(id);
-        // axios.delete(`http://localhost:5000/product?id=${id}`, {
-        //     headers: { authentication: localStorage.getItem('accessToken') }
-        // })
-        //     .then(res => {
-        //         if (res?.data?.deletedCount) { toast('Product deleted successfully') }
-        //     })
-        //     .catch(console.dir)
-        // refetch();
+        axios.delete(`http://localhost:5000/orderItem?id=${id}`, {
+            headers: { authentication: localStorage.getItem('accessToken') }
+        })
+            .then(res => {
+                if (res?.data?.deletedCount) { toast('Product deleted successfully') }
+            })
+            .catch(console.dir)
+        refetch();
     }
     return (
         <div>

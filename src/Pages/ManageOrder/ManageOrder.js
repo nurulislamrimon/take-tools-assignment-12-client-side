@@ -24,7 +24,24 @@ const ManageOrder = () => {
         signOut(auth);
         navigate('/login');
     };
-    console.log(data?.data);
+
+    const handleStatusChange = (id) => {
+        fetch('http://localhost:5000/status', {
+            method: 'PATCH',
+            headers: {
+                authentication: localStorage.getItem('accessToken'),
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data?.acknowledged) {
+                    toast('An order has been shipped')
+                }
+            })
+        refetch();
+    }
     return (
         <section className='relative h-[calc(100vh-115px)] overflow-auto'>
             {/* dashboard menu expander */}
@@ -41,28 +58,39 @@ const ManageOrder = () => {
                         <th>Photo</th>
                         <th>Customer</th>
                         <th>price</th>
-                        <th>Ordered item</th>
+                        <th>Quantity</th>
                         <th></th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {data?.data?.map((order, index) =>
                         <tr key={index}>
                             <th>{index + 1}</th>
-                            <td>{order?.name}</td>
+                            <td title={order?.name}>{order?.name?.slice(0, 5)?.concat('...')}</td>
                             <td className='h-[60px]'><img src={order?.picture} alt="img" width={50} className='h-full' /></td>
-                            <td>{order?.customer}</td>
+                            <td title={order?.customer}>{order?.customer?.slice(0, 5)?.concat('...') + order?.customer?.slice(-10)}</td>
                             <td>${order?.price}</td>
                             <td>{order?.cartQuantity}pcs</td>
                             <td>
                                 {!order?.paid ? <div className="flex justify-around">
+                                    <p className="text-lg text-error">
+                                        Unpaid
+                                    </p>
                                     <label onClick={() => setCancelOrder(order)} htmlFor="confirmCancelOrder" className='cursor-pointer hover:text-red-700'>
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
                                     </label>
                                     {cancelOrder && <ConfirmCancelOrder order={cancelOrder} refetch={refetch} />}
-                                </div> : <div className='text-center'><p className='text-success text-xl mr-3'>Paid</p> <p>Trx ID: {order?.trxId}</p></div>}
+                                </div> : <div className='text-center'><p className='text-success text-xl mr-3'>Paid</p> <p title={order?.trxId}>Trx ID: <br />{order?.trxId}</p></div>}
+                            </td>
+                            <td>
+                                {order?.trxId && (!order?.shipped ?
+                                    <div className="flex justify-between items-center">
+                                        <p>Pending</p>
+                                        <button onClick={() => handleStatusChange(order?._id)} className='btn ml-3'>Make Shipped</button>
+                                    </div> : <p className='text-success'>Shipped</p>)}
                             </td>
                         </tr>
                     )}
